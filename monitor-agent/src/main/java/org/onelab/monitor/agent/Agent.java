@@ -2,7 +2,7 @@ package org.onelab.monitor.agent;
 
 import org.onelab.monitor.agent.config.AgentConfig;
 import org.onelab.monitor.agent.transform.AgentTransformer;
-import org.onelab.monitor.agent.transform.asm.BasicUtil;
+import org.onelab.monitor.agent.transform.asm.AgentUtil;
 import org.onelab.monitor.agent.transport.Consumer;
 
 import java.lang.instrument.Instrumentation;
@@ -42,6 +42,6 @@ public class Agent {
         Runtime.getRuntime().addShutdownHook(thread);
     }
     public static void main(String[] args){
-        System.out.println(BasicUtil.class);
+        System.out.println(AgentUtil.class);
     }
 }

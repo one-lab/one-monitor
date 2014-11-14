@@ -5,10 +5,10 @@ import org.objectweb.asm.ClassWriter;
 /**
  * Created by chunliangh on 14-11-13.
  */
-public class BasicClassWriter extends ClassWriter {
+public class AgentClassWriter extends ClassWriter {
 
-    public BasicClassWriter(BasicClassReader classReader, ClassLoader loader) {
-        super(classReader, BasicUtil.getClassWriterFlags());
+    public AgentClassWriter(AgentClassReader classReader, ClassLoader loader) {
+        super(classReader, AgentUtil.getClassWriterFlags());
     }
 
     @Override

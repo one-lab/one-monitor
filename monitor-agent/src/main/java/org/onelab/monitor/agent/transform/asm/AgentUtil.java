@@ -3,7 +3,7 @@ package org.onelab.monitor.agent.transform.asm;
 /**
  * Created by chunliangh on 14-11-13.
  */
-public class BasicUtil {
+public class AgentUtil {
     static char minorVersion ;
     static {
         String version = System.getProperty("java.version");
