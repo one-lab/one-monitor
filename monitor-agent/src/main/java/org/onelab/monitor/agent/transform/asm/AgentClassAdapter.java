@@ -1,6 +1,8 @@
 package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
+import org.objectweb.asm.commons.JSRInlinerAdapter;
+import org.onelab.monitor.agent.transform.Aop;
 import org.onelab.monitor.agent.transform.TransformedClass;
 import org.onelab.monitor.agent.transform.matcher.MethodMatcher;
 
@@ -9,11 +11,15 @@ import org.onelab.monitor.agent.transform.matcher.MethodMatcher;
  */
 public class AgentClassAdapter extends ClassVisitor {
     private String className;
+    private String supperName;
+    private String[] interfaces;
     private boolean hasTransformedClass = false;
 
-    public AgentClassAdapter(ClassVisitor cv, String className) {
+    public AgentClassAdapter(ClassVisitor cv, String className, String supperName, String[] interfaces) {
         super(Opcodes.ASM5, cv);
         this.className = className;
+        this.supperName = supperName;
+        this.interfaces = interfaces;
     }
 
     @Override
@@ -29,14 +35,12 @@ public class AgentClassAdapter extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String description, String signature, String[] exceptions) {
         System.out.println("visitMethod:" + name + ",description:" + description);
         MethodVisitor mv = super.visitMethod(access, name, description, signature, exceptions);
-
         if(!MethodMatcher.match(hasTransformedClass,className,name,description,access)){
             return mv;
         }
-//        BasicMethodAdapter ma = new BasicMethodAdapter(this, this.className, mv, access, name, description, interceptor);
-//        JSRInlinerAdapter jsrInlinerAdapter = new JSRInlinerAdapter(ma, access, name, description, signature, exceptions);
-//        return jsrInlinerAdapter;
-        return mv;
+        String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
+        AgentMethodAdapter amv = new AgentMethodAdapter(pointCutName,className,mv,access,name,description);
+        return amv;
     }
 
     public void visitEnd() {

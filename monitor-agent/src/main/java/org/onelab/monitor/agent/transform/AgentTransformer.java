@@ -22,7 +22,7 @@ public class AgentTransformer implements ClassFileTransformer {
             AgentClassReader classReader = new AgentClassReader(classfileBuffer);
             if (classReader.usable()) {
                 AgentClassWriter classWriter = new AgentClassWriter(classReader, loader);
-                AgentClassAdapter classAdapter = new AgentClassAdapter(classWriter,className);
+                AgentClassAdapter classAdapter = new AgentClassAdapter(classWriter,className,classReader.getSuperName(),classReader.getInterfaces());
                 classReader.accept(classAdapter, AgentUtil.getClassReaderFlags());
                 return classWriter.toByteArray();
             }
