@@ -16,7 +16,7 @@ public class AgentClassAdapter extends ClassVisitor {
     private boolean hasTransformedClass = false;
 
     public AgentClassAdapter(ClassVisitor cv, String className, String supperName, String[] interfaces) {
-        super(Opcodes.ASM5, cv);
+        super(Opcodes.ASM4, cv);
         this.className = className;
         this.supperName = supperName;
         this.interfaces = interfaces;
@@ -39,8 +39,9 @@ public class AgentClassAdapter extends ClassVisitor {
             return mv;
         }
         String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
-        AgentMethodAdapter amv = new AgentMethodAdapter(pointCutName,className,mv,access,name,description);
-        return amv;
+        AgentMethodAdapter amv = new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
+        JSRInlinerAdapter jsrInlinerAdapter = new JSRInlinerAdapter(amv, access, name, description, signature, exceptions);
+        return jsrInlinerAdapter;
     }
 
     public void visitEnd() {
