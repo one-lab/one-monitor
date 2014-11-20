@@ -101,10 +101,10 @@ public class Test_1 {
     }
     public void test5(Throwable throwable){
         try {
-            Class a = Throwable.class;
-            Object b = a;
+//            Class a = Throwable.class;
+//            Object b = a;
         }finally {
-            new String();
+//            new String();
         }
     }
 }
