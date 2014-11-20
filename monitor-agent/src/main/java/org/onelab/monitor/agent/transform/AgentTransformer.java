@@ -18,7 +18,6 @@ public class AgentTransformer implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         if (ClassNameMatcher.match(className)) {
-            System.out.println(className);
             AgentClassReader classReader = new AgentClassReader(classfileBuffer);
             if (classReader.usable()) {
                 AgentClassWriter classWriter = new AgentClassWriter(classReader, loader);

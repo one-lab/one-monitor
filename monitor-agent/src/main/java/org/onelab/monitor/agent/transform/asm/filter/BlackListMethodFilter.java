@@ -8,8 +8,8 @@ import org.onelab.monitor.agent.config.AgentConfig;
 public class BlackListMethodFilter implements MethodFilter {
     private static final String patten = AgentConfig.getMethodBlackListPatten();
     @Override
-    public boolean check(String className, String name) {
-        if (patten!=null && (className+"#"+name).matches(patten)){
+    public boolean check(String className, String name,String description) {
+        if (patten!=null && (className+"#"+name+"#"+description).matches(patten)){
             return false;
         }
         return true;

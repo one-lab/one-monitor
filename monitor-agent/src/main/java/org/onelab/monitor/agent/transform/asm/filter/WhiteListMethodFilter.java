@@ -9,9 +9,9 @@ import org.onelab.monitor.agent.config.AgentConfig;
 public class WhiteListMethodFilter implements MethodFilter {
     private static final String patten = AgentConfig.getMethodWhiteListPatten();
     @Override
-    public boolean check(String className, String name) {
+    public boolean check(String className, String name,String description) {
         if (patten!=null){
-            if ((className+"#"+name).matches(patten)){
+            if ((className+"#"+name+"#"+description).matches(patten)){
                 return true;
             } else return false;
         }

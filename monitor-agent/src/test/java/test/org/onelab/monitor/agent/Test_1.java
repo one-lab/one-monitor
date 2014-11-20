@@ -78,6 +78,7 @@ public class Test_1 {
 //        System.out.println(a);
 //        String b = new String();
 //        System.out.println(b);
+        String a = "s";
         test3("ss",false);
     }
     public int test3(String a,boolean b){
@@ -90,13 +91,20 @@ public class Test_1 {
         }
         return 0;
     }
-    public void test4(){
+    public void test4() throws Exception{
         try{
             System.currentTimeMillis();
         }catch (Exception e){
-            Math.sqrt(1);
+            test5(e);
+            throw e;
+        }
+    }
+    public void test5(Throwable throwable){
+        try {
+            Class a = Throwable.class;
+            Object b = a;
         }finally {
-            Math.sqrt(2);
+            new String();
         }
     }
 }
