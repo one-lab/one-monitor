@@ -27,9 +27,9 @@ public class AgentClassAdapter extends ClassVisitor {
         if(!MethodMatcher.match(className,name,description,access)){
             return mv;
         }
-        if (className.equals("com/jumei/pic/demo/controller/PicController")){
-            System.out.println("=========================com/jumei/pic/demo/controller/PicController");
-        }
+//        if (className.equals("com/jumei/pic/demo/controller/PicController")){
+//            System.out.println("=========================com/jumei/pic/demo/controller/PicController");
+//        }
         String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
         return new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
     }

@@ -5,8 +5,8 @@ package org.onelab.monitor.agent.domain;
  */
 public class AgentHandler {
 
-    public static void enter(String pointCutName,boolean requireStore,String className,String methodName,String methodDesc,Object thisObj, Object[] args){
-        System.out.println("==>enter method..");
+    public static void onEnter(String pointCutName,boolean requireStore,String className,String methodName,String methodDesc,Object thisObj, Object[] args){
+        System.out.println("==>onEnter method..");
         System.out.println("==> pointCutName:"+pointCutName);
         System.out.println("==> requireStore:"+requireStore);
         System.out.println("==> className:"+className);
@@ -16,12 +16,12 @@ public class AgentHandler {
         System.out.println("==> args:"+args);
 
     }
-    public static void fail(Throwable th){
+    public static void onFail(Throwable th){
         System.out.println("=======> fail th:"+th);
-        System.out.println("=======>end method");
+        System.out.println("=======>onFail method");
     }
-    public static void exit(Object returnValue){
+    public static void onExit(Object returnValue){
         System.out.println("==> exit returnValue:"+returnValue);
-        System.out.println("==>end method");
+        System.out.println("==>onExit method");
     }
 }

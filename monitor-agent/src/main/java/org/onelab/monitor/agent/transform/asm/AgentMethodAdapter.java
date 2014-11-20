@@ -8,8 +8,6 @@ import org.objectweb.asm.commons.AdviceAdapter;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.TransformedMethod;
 
-import java.util.logging.Level;
-
 /**
  * Created by chunliangh on 14-11-14.
  */
