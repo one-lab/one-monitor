@@ -6,22 +6,21 @@ package org.onelab.monitor.agent.domain;
 public class AgentHandler {
 
     public static void onEnter(String pointCutName,boolean requireStore,String className,String methodName,String methodDesc,Object thisObj, Object[] args){
-        System.out.println("==>onEnter method..");
-        System.out.println("==> pointCutName:"+pointCutName);
-        System.out.println("==> requireStore:"+requireStore);
-        System.out.println("==> className:"+className);
-        System.out.println("==> methodName:"+methodName);
-        System.out.println("==> methodDesc:"+methodDesc);
-        System.out.println("==> thisObj:"+thisObj);
-        System.out.println("==> args:"+args);
-
+        StringBuilder sb = new StringBuilder()
+                .append("==>onEnter method[")
+                .append("pointCutName:").append(pointCutName)
+                .append(",requireStore:").append(requireStore)
+                .append(",className:").append(className)
+                .append(",methodName:").append(methodName)
+                .append(",methodDesc:").append(methodDesc)
+                .append(",thisObj:").append(thisObj)
+                .append(",args:").append(args).append("]");
+        System.out.println(sb);
     }
     public static void onFail(Throwable th){
-        System.out.println("=======> fail th:"+th);
-        System.out.println("=======>onFail method");
+        System.out.println("==> onFail throwable:"+th);
     }
     public static void onExit(Object returnValue){
-        System.out.println("==> exit returnValue:"+returnValue);
-        System.out.println("==>onExit method");
+        System.out.println("==> onExit value:"+returnValue);
     }
 }

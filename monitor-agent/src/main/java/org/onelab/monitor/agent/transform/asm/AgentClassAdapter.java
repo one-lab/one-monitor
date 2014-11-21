@@ -25,7 +25,6 @@ public class AgentClassAdapter extends ClassVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        System.out.println(desc);
         if (desc.contains(Commons.agentTransformedClass)){
             hasTransformedClass = true;
         }
@@ -37,9 +36,10 @@ public class AgentClassAdapter extends ClassVisitor {
         MethodVisitor mv = super.visitMethod(access, name, description, signature, exceptions);
         if(!MethodMatcher.match(className,name,description,access)){
             return mv;
+        }else{
+            String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
+            return new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
         }
-        String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
-        return new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
     }
 
     public void visitEnd() {

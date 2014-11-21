@@ -1,9 +1,6 @@
 package org.onelab.monitor.agent.transform.asm;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.TransformedMethod;
@@ -18,6 +15,8 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     private String methodName;
     private String methodDesc;
     private boolean requireStore;//0不存储，1存储
+
+    private boolean hasTransformedMethod = false;
 
     private Label startFinally = new Label();
 
@@ -89,6 +88,13 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         super.visitLabel(this.startFinally);
     }
 
+    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+        if (desc.contains(Commons.agentTransformedMethod)){
+            hasTransformedMethod = true;
+        }
+        return super.visitAnnotation(desc,visible);
+    }
+
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         super.visitMethodInsn(opcode, owner, name, desc, itf);
@@ -107,6 +113,8 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     @Override
     public void visitEnd() {
         super.visitEnd();
-        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+        if (!hasTransformedMethod){
+            super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+        }
     }
 }
