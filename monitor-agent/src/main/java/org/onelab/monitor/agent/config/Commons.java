@@ -4,6 +4,8 @@ package org.onelab.monitor.agent.config;
  * Created by chunliangh on 14-11-19.
  */
 public interface Commons {
+    String javaObjectType = "java/lang/Object";
+    String agentTransformedClass = "Lorg/onelab/monitor/agent/transform/TransformedClass;";
     String agentHandlerClass = "org/onelab/monitor/agent/domain/AgentHandler";
     String agentHandlerEnter = "onEnter";
     String agentHandlerFail = "onFail";
