@@ -1,5 +1,8 @@
 package org.onelab.monitor.agent.transform.asm;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
 /**
  * Created by chunliangh on 14-11-13.
  */
@@ -9,9 +12,9 @@ public class AgentUtil {
         String version = System.getProperty("java.version");
         minorVersion = version.charAt(2);
     }
-    static final int CLASSREADER_FLAG = minorVersion >= '6' ? 8 : 0;
+    static final int CLASSREADER_FLAG = minorVersion >= '6' ? ClassReader.EXPAND_FRAMES : 0;
 
-    static final int CLASSWRITER_FLAG = minorVersion >= '7' ? 2 : 1;
+    static final int CLASSWRITER_FLAG = minorVersion >= '7' ? ClassWriter.COMPUTE_FRAMES : ClassWriter.COMPUTE_MAXS;
 
     public static int getClassReaderFlags() {
         return CLASSREADER_FLAG;
