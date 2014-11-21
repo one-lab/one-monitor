@@ -47,7 +47,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
             super.loadThis();
         }
         super.loadArgArray();
-        super.visitMethodInsn(Opcodes.INVOKESTATIC, agentHandlerClass, agentHandlerEnter, agentHandlerEnterDesc, false);
+        super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_ENTER, AGENT_HANDLER_ENTER_DESC, false);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         int th = newLocal(thType);
         storeLocal(th);
         loadLocal(th);
-        super.visitMethodInsn(Opcodes.INVOKESTATIC, agentHandlerClass, agentHandlerFail, agentHandlerFailDesc, false);
+        super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_FAIL, AGENT_HANDLER_FAIL_DESC, false);
     }
 
     private void exitNormally(int opcode) {
@@ -79,7 +79,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
             }
             super.box(Type.getReturnType(this.methodDesc));
         }
-        super.visitMethodInsn(Opcodes.INVOKESTATIC, agentHandlerClass, agentHandlerExit, agentHandlerExitDesc, false);
+        super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_EXIT, AGENT_HANDLER_EXIT_DESC, false);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     }
 
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (desc.contains(Commons.agentTransformedMethod)){
+        if (desc.contains(Commons.AGENT_TRANSFORMED_METHOD)){
             hasTransformedMethod = true;
         }
         return super.visitAnnotation(desc,visible);

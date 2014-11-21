@@ -30,7 +30,7 @@ public class AgentClassWriter extends ClassWriter {
             return type2;
         }
         if (c.isInterface() || d.isInterface()) {
-            return Commons.javaObjectType;
+            return Commons.JAVA_OBJECT_TYPE;
         } else {
             do {
                 c = c.getSuperclass();

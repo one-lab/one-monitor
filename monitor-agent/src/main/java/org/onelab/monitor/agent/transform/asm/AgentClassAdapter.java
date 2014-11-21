@@ -25,7 +25,7 @@ public class AgentClassAdapter extends ClassVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (desc.contains(Commons.agentTransformedClass)){
+        if (desc.contains(Commons.AGENT_TRANSFORMED_CLASS)){
             hasTransformedClass = true;
         }
         return super.visitAnnotation(desc, visible);

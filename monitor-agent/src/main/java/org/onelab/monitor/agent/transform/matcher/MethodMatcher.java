@@ -2,6 +2,7 @@ package org.onelab.monitor.agent.transform.matcher;
 
 import org.objectweb.asm.Opcodes;
 import org.onelab.monitor.agent.config.AgentConfig;
+import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.asm.filter.BlackListMethodFilter;
 import org.onelab.monitor.agent.transform.asm.filter.MethodFilter;
 import org.onelab.monitor.agent.transform.asm.filter.WhiteListMethodFilter;
@@ -23,9 +24,9 @@ public class MethodMatcher {
 
     public static boolean match(String className, String name, String description, int access) {
 
-        if (name.matches("<(cl)?init>")) return false;
+        if (name.matches(Commons.CONSTRUCTOR_PATTERN)) return false;
         if (!canAccPrivateMethod && (access & Opcodes.ACC_PRIVATE)!=0) return false;
-        if (!canAccSetMethod && name.startsWith("set")) return false;
+        if (!canAccSetMethod && name.startsWith(Commons.SET)) return false;
         if (hasMethodFilter) {
             for (MethodFilter methodFilter:methodFilters){
                 if (!methodFilter.check(className,name,description)){
