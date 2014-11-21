@@ -5,6 +5,7 @@ import org.objectweb.asm.Opcodes;
 import org.onelab.monitor.agent.config.AgentConfig;
 
 /**
+ * monitor-agent类载入器
  * Created by chunliangh on 14-11-13.
  */
 public class AgentClassReader extends ClassReader {

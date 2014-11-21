@@ -4,6 +4,7 @@ import org.objectweb.asm.ClassWriter;
 import org.onelab.monitor.agent.config.Commons;
 
 /**
+ * monitor-agent类写入器
  * Created by chunliangh on 14-11-13.
  */
 public class AgentClassWriter extends ClassWriter {

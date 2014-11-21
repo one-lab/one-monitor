@@ -6,6 +6,7 @@ import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.TransformedMethod;
 
 /**
+ * monitor-agent方法适配器
  * Created by chunliangh on 14-11-14.
  */
 public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Commons {

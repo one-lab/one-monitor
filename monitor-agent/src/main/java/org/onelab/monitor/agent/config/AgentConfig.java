@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.config;
 
 /**
+ * 系统配置
  * Created by chunliangh on 14-11-13.
  */
 public class AgentConfig {

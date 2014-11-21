@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.config;
 
 /**
+ * 系统常量
  * Created by chunliangh on 14-11-19.
  */
 public interface Commons {
@@ -23,5 +24,5 @@ public interface Commons {
 
     //If you want sum of the patterned classes to be transformed,please put the right pattern into the WhiteList
     //but it might be cause unexpected result
-    String ILLEGAL_PATTERN = "\\$.*|.*\\$\\$.*|java/.*|javax/.*|sun/.*|com/sun/.*|org/.*";
+    String ILLEGAL_PATTERN = "\\$.*|.*\\$\\$.*|java/.*|javax/.*|sun/.*|com/sun/.*|org/.*|net/.*";
 }

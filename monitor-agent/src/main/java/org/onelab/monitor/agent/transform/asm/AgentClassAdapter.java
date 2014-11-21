@@ -2,11 +2,12 @@ package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
 import org.onelab.monitor.agent.config.Commons;
-import org.onelab.monitor.agent.transform.Aop;
+import org.onelab.monitor.agent.transform.matcher.CategoryMatcher;
 import org.onelab.monitor.agent.transform.TransformedClass;
-import org.onelab.monitor.agent.transform.matcher.MethodMatcher;
+import org.onelab.monitor.agent.transform.matcher.method.MethodMatcher;
 
 /**
+ * monitor-agent类适配器
  * Created by chunliangh on 14-11-13.
  */
 public class AgentClassAdapter extends ClassVisitor {
@@ -37,7 +38,7 @@ public class AgentClassAdapter extends ClassVisitor {
         if(!MethodMatcher.match(className,name,description,access)){
             return mv;
         }else{
-            String pointCutName = Aop.getPointCutName(className,supperName,interfaces,name,description);
+            String pointCutName = CategoryMatcher.getPointCutName(className, supperName, interfaces, name, description);
             return new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
         }
     }

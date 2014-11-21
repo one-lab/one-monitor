@@ -1,12 +1,12 @@
-package org.onelab.monitor.agent.transform.filter;
+package org.onelab.monitor.agent.transform.matcher.type.checker;
 
 import org.onelab.monitor.agent.config.AgentConfig;
 
 /**
- * 类名白名单：类名的白名单必须设置，否则代码将不会被监控
+ * 类名白名单校验器
  * Created by chunliangh on 14-11-13.
  */
-public class WhiteListClassNameFilter implements ClassNameFilter {
+public class WhiteListChecker implements TypeChecker {
     private static final String patten = AgentConfig.getWhiteListPatten();
     @Override
     public boolean check(String className) {
