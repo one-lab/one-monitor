@@ -1,9 +1,6 @@
 package org.onelab.monitor.agent.transform.matcher;
 
-import org.onelab.monitor.agent.transform.filter.BasicClassNameFilter;
-import org.onelab.monitor.agent.transform.filter.BlackListClassNameFilter;
-import org.onelab.monitor.agent.transform.filter.ClassNameClassFilter;
-import org.onelab.monitor.agent.transform.filter.WhiteListClassNameFilter;
+import org.onelab.monitor.agent.transform.filter.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,26 +10,31 @@ import java.util.List;
  */
 public class ClassNameMatcher {
 
-    private static List<ClassNameClassFilter> classNameFilters ;
+    private static List<ClassNameFilter> classNameFilters ;
+    private static ForceTransformListClassNameFilter forceListFilter;
     static {
         init();
     }
 
     public static boolean match(String className){
         boolean canTransform = true;
-        for (ClassNameClassFilter classNameFilter:classNameFilters){
+        for (ClassNameFilter classNameFilter:classNameFilters){
             canTransform = classNameFilter.check(className);
             if (!canTransform){
                 break;
             }
         }
+        if (!canTransform){
+            canTransform = forceListFilter.check(className);
+        }
         return canTransform;
     }
 
     private static void init(){
-        classNameFilters = new LinkedList<ClassNameClassFilter>();
-        classNameFilters.add(new WhiteListClassNameFilter());
-        classNameFilters.add(new BlackListClassNameFilter());
+        forceListFilter = new ForceTransformListClassNameFilter();
+        classNameFilters = new LinkedList<ClassNameFilter>();
         classNameFilters.add(new BasicClassNameFilter());
+        classNameFilters.add(new BlackListClassNameFilter());
+        classNameFilters.add(new WhiteListClassNameFilter());
     }
 }

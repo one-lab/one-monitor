@@ -12,11 +12,11 @@ public class AgentConfig {
     public static void init() throws Exception{}
 
     public static String getWhiteListPatten() {
-        return "com/jumei/.*";
+        return ".*";
     }
 
     public static String getBlackListPatten() {
-        return null;
+        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*";
     }
 
     public static String getMethodWhiteListPatten() {
@@ -41,5 +41,9 @@ public class AgentConfig {
 
     public static boolean getMethodFilter() {
         return methodFilter;
+    }
+
+    public static String getForceListPatten() {
+        return null;
     }
 }

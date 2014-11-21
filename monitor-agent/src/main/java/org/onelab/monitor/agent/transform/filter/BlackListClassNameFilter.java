@@ -5,7 +5,7 @@ import org.onelab.monitor.agent.config.AgentConfig;
 /**
  * Created by chunliangh on 14-11-13.
  */
-public class BlackListClassNameFilter implements ClassNameClassFilter {
+public class BlackListClassNameFilter implements ClassNameFilter {
     private static final String patten = AgentConfig.getBlackListPatten();
     @Override
     public boolean check(String className) {

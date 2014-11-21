@@ -14,4 +14,9 @@ public interface Commons {
     String agentHandlerEnterDesc = "(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V";
     String agentHandlerFailDesc = "(Ljava/lang/Throwable;)V";
     String agentHandlerExitDesc = "(Ljava/lang/Object;)V";
+
+    //If you want sum of the patterned classes to be transformed,please put the right pattern into the WhiteList
+    //but it might be cause unexpected result
+    String ILLEGAL_PATTERN = "\\$.*|.*\\$\\$.*|java/.*|javax/.*|sun/.*|com/sun/.*|org/.*";
+
 }

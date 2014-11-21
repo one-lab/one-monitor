@@ -1,15 +1,13 @@
 package org.onelab.monitor.agent.transform.filter;
 
+import org.onelab.monitor.agent.config.Commons;
+
 /**
  * Created by chunliangh on 14-11-13.
  */
-public class BasicClassNameFilter implements ClassNameClassFilter {
-    private static final String patten = "\\$.*|.*\\$\\$.*|" +
-            "org/onelab/monitor/agent/.*|" +
-            "java/.*|javax/.*|sun/.*|com/sun/.*|" +
-            "org/xml/sax/.*|org/jcp/xml/.*|org/eclipse/.*";
+public class BasicClassNameFilter implements ClassNameFilter {
     @Override
     public boolean check(String className) {
-        return !className.matches(patten);
+        return !className.matches(Commons.ILLEGAL_PATTERN);
     }
 }
