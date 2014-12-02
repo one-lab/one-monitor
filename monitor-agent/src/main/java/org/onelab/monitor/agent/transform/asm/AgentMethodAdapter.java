@@ -97,11 +97,6 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     }
 
     @Override
-    public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-        super.visitMethodInsn(opcode, owner, name, desc, itf);
-    }
-
-    @Override
     public void visitMaxs(int maxStack, int maxLocals) {
         Label endFinally = new Label();
         super.visitTryCatchBlock(this.startFinally, endFinally, endFinally, null);

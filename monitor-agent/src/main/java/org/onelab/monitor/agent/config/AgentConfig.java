@@ -1,5 +1,8 @@
 package org.onelab.monitor.agent.config;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 系统配置
  * Created by chunliangh on 14-11-13.
@@ -46,5 +49,12 @@ public class AgentConfig {
 
     public static String getForceListPatten() {
         return null;
+    }
+
+    public static void main(String[] args){
+        Pattern p = Pattern.compile("a.*");
+        Matcher m = p.matcher("ass");
+//        m.reset("ass");
+        System.out.println(m.matches());
     }
 }
