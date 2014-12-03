@@ -4,6 +4,10 @@ import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.TransformedMethod;
+import org.onelab.monitor.agent.transform.asm.inserter.MethodCodeInserter;
+import org.onelab.monitor.agent.transform.asm.inserter.MethodListener;
+
+import java.util.List;
 
 /**
  * monitor-agent方法适配器
@@ -11,6 +15,7 @@ import org.onelab.monitor.agent.transform.TransformedMethod;
  */
 public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Commons {
 
+    private MethodVisitor methodVisitor;
     private String className;
     private String methodName;
     private String methodDesc;
@@ -23,6 +28,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     public AgentMethodAdapter(int processFlag, String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
+        this.methodVisitor = mv;
         this.processFlag = processFlag;
         this.className = className;
         this.methodName = methodName;
@@ -82,11 +88,23 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         super.visitLabel(this.startFinally);
     }
 
+    @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         if (desc.contains(Commons.AGENT_TRANSFORMED_METHOD)){
             hasTransformedMethod = true;
         }
         return super.visitAnnotation(desc,visible);
+    }
+
+    @Override
+    public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+        List<MethodListener> methodListeners = MethodListener.list();
+        if (methodListeners!=null){
+            for (MethodListener methodListener:methodListeners){
+                methodListener.onVisitMethodInsn(methodVisitor,owner,name,desc);
+            }
+        }
+        super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
 
     @Override
