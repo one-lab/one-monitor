@@ -39,7 +39,7 @@ public class AgentClassAdapter extends ClassVisitor {
             return mv;
         }else{
             String pointCutName = CategoryMatcher.getPointCutName(className, supperName, interfaces, name, description);
-            return new AgentMethodAdapter(pointCutName,true,className,mv,access,name,description);
+            return new AgentMethodAdapter(100,className,mv,access,name,description);
         }
     }
 

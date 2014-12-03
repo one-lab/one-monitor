@@ -11,21 +11,19 @@ import org.onelab.monitor.agent.transform.TransformedMethod;
  */
 public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Commons {
 
-    private String pointCutName;
     private String className;
     private String methodName;
     private String methodDesc;
-    private boolean requireStore;//0不存储，1存储
+    private int processFlag;
 
     private boolean hasTransformedMethod = false;
 
     private Label startFinally = new Label();
 
-    public AgentMethodAdapter(String pointCutName, boolean requireStore, String className, final MethodVisitor mv,
+    public AgentMethodAdapter(int processFlag, String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
-        this.pointCutName = pointCutName;
-        this.requireStore = requireStore;
+        this.processFlag = processFlag;
         this.className = className;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
@@ -33,12 +31,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     protected void onMethodEnter() {
-        super.visitLdcInsn(pointCutName);
-        if (requireStore) {
-            super.visitInsn(ICONST_1);
-        } else {
-            super.visitInsn(ICONST_0);
-        }
+        super.visitLdcInsn(processFlag);
         super.visitLdcInsn(className);
         super.visitLdcInsn(methodName);
         super.visitLdcInsn(methodDesc);

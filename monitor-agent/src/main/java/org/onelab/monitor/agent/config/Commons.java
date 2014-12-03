@@ -15,7 +15,7 @@ public interface Commons {
     String AGENT_HANDLER_ENTER = "onEnter";
     String AGENT_HANDLER_FAIL = "onFail";
     String AGENT_HANDLER_EXIT = "onExit";
-    String AGENT_HANDLER_ENTER_DESC = "(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V";
+    String AGENT_HANDLER_ENTER_DESC = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V";
     String AGENT_HANDLER_FAIL_DESC = "(Ljava/lang/Throwable;)V";
     String AGENT_HANDLER_EXIT_DESC = "(Ljava/lang/Object;)V";
 

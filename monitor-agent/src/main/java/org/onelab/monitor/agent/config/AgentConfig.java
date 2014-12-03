@@ -20,7 +20,7 @@ public class AgentConfig {
     }
 
     public static String getBlackListPatten() {
-        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*";
+        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*";
     }
 
     public static String getMethodWhiteListPatten() {
