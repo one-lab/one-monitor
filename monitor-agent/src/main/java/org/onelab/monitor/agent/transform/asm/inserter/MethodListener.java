@@ -11,16 +11,16 @@ import java.util.List;
  */
 public class MethodListener {
 
-    private String owner;
-    private String name;
-    private String desc;
+    private String targetType;
+    private String targetMethod;
+    private String targetMethodDesc;
     private List<MethodCodeInserter> inserters;
     private static List<MethodListener> listeners;
 
-    private MethodListener(String owner, String name, String desc, List<MethodCodeInserter> inserters) {
-        this.owner = owner;
-        this.name = name;
-        this.desc = desc;
+    private MethodListener(String targetType, String targetMethod, String targetMethodDesc, List<MethodCodeInserter> inserters) {
+        this.targetType = targetType;
+        this.targetMethod = targetMethod;
+        this.targetMethodDesc = targetMethodDesc;
         this.inserters = inserters;
     }
 
@@ -32,11 +32,11 @@ public class MethodListener {
         }
     }
 
-    public static void addListener(String owner, String name, String desc, MethodCodeInserter... inserters){
+    public static void addListener(String targetType, String targetMethod, String targetMethodDesc, MethodCodeInserter... inserters){
         if (listeners == null){
             listeners = new LinkedList<MethodListener>();
         }
-        listeners.add(new MethodListener(owner, name, desc, Arrays.asList(inserters)));
+        listeners.add(new MethodListener(targetType, targetMethod, targetMethodDesc, Arrays.asList(inserters)));
     }
 
     public static List<MethodListener> list(){
@@ -44,8 +44,8 @@ public class MethodListener {
     }
 
     private boolean match(String owner,String name,String desc){
-        if (!this.owner.equals(owner)
-                || !this.name.equals(name) ||!this.desc.equals(desc)) {
+        if (!targetType.equals(owner)
+                || !targetMethod.equals(name) ||!targetMethodDesc.equals(desc)) {
             return false;
         }
         return true;
