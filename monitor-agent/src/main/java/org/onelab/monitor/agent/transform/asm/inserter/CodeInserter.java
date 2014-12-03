@@ -4,9 +4,10 @@ import org.objectweb.asm.MethodVisitor;
 
 /**
  * 方法插入器，作用域为指定方法
+ * 注意：todo
  * Created by chunliangh on 14-12-3.
  */
-public abstract class MethodCodeInserter {
+public abstract class CodeInserter {
     private String owner;
     private String name;
     private String desc;
@@ -21,7 +22,7 @@ public abstract class MethodCodeInserter {
      * @param desc
      * @param index 从1开始
      */
-    public MethodCodeInserter(String owner, String name, String desc, int index) {
+    public CodeInserter(String owner, String name, String desc, int index) {
         if(index<1 || owner==null || name==null || desc==null){
             throw new IllegalArgumentException();
         }
@@ -31,13 +32,18 @@ public abstract class MethodCodeInserter {
         this.index = index;
     }
 
-    public void visit(MethodVisitor mv,String owner,String name,String desc){
+    public void visit(MethodVisitor mv,int opcode,String owner,String name,String desc,boolean itf){
         if (match(owner,name,desc)){
-            insert(mv);
+            insertBefore(mv);
+            mv.visitMethodInsn(opcode, owner, name, desc, itf);
+            insertAfter(mv);
+        }else{
+            mv.visitMethodInsn(opcode, owner, name, desc, itf);
         }
     }
 
-    abstract protected void insert(MethodVisitor mv);
+    abstract protected void insertBefore(MethodVisitor mv);
+    abstract protected void insertAfter(MethodVisitor mv);
 
     private boolean match(String owner,String name,String desc){
         if (!this.owner.equals(owner)

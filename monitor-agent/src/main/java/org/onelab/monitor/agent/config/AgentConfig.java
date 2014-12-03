@@ -16,11 +16,11 @@ public class AgentConfig {
     public static void init() throws Exception{}
 
     public static String getWhiteListPatten() {
-        return ".*";
+        return "com/jumei/.*";
     }
 
     public static String getBlackListPatten() {
-        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*";
+        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*";
     }
 
     public static String getMethodWhiteListPatten() {
