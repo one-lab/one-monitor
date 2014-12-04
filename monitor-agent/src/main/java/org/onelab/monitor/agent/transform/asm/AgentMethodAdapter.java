@@ -31,23 +31,23 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         this.className = className;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
-//        CodeInserterPool.addMethodCodeInserter("com/jumei/pic/demo/controller/PicController", "upload", "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/web/multipart/commons/CommonsMultipartFile;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-//                new CodeInserter("com/jumei/pic/utils/PicUtils", "upLoadPic", "(Ljava/lang/String;Lcom/jumei/pic/utils/Config;[B)Ljava/lang/String;", 1) {
-//                    @Override
-//                    protected void insertBefore(MethodVisitor mv) {
-//                        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                        mv.visitLdcInsn("************************************************************");
-//                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-//                    }
-//
-//                    @Override
-//                    protected void insertAfter(MethodVisitor mv) {
-//                        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                        mv.visitLdcInsn("************************************************************");
-//                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-//                    }
-//                }
-//        );
+        CodeInserterPool.addMethodCodeInserter("com/jumei/pic/demo/controller/PicController", "upload", "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/web/multipart/commons/CommonsMultipartFile;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                new CodeInserter("com/jumei/pic/utils/PicUtils", "upLoadPic", "(Ljava/lang/String;Lcom/jumei/pic/utils/Config;[B)Ljava/lang/String;", 1) {
+                    @Override
+                    protected void beforeMethodInsn(MethodVisitor mv) {
+                        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                        mv.visitLdcInsn("************************************************************");
+                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+                    }
+
+                    @Override
+                    protected void afterMethodInsn(MethodVisitor mv) {
+                        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                        mv.visitLdcInsn("************************************************************");
+                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+                    }
+                }
+        );
     }
 
     @Override
@@ -114,11 +114,16 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         List<CodeInserter> codeInserters = CodeInserterPool.get(className, methodName, methodDesc);
+        boolean matched = false;
         if (codeInserters != null){
             for (CodeInserter codeInserter:codeInserters){
-                codeInserter.visit(mv,opcode,owner,name,desc,itf);
+                if (codeInserter.match(owner, name, desc)){
+                    codeInserter.visit(mv,opcode,owner,name,desc,itf);
+                    matched = true;
+                }
             }
-        }else{
+        }
+        if (!matched){
             super.visitMethodInsn(opcode, owner, name, desc, itf);
         }
     }

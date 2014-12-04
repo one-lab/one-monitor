@@ -16,7 +16,7 @@ public class AgentConfig {
     public static void init() throws Exception{}
 
     public static String getWhiteListPatten() {
-        return "com/jumei/.*";
+        return ".*";
     }
 
     public static String getBlackListPatten() {

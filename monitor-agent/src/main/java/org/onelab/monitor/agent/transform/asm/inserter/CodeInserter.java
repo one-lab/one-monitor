@@ -33,19 +33,15 @@ public abstract class CodeInserter {
     }
 
     public void visit(MethodVisitor mv,int opcode,String owner,String name,String desc,boolean itf){
-        if (match(owner,name,desc)){
-            insertBefore(mv);
-            mv.visitMethodInsn(opcode, owner, name, desc, itf);
-            insertAfter(mv);
-        }else{
-            mv.visitMethodInsn(opcode, owner, name, desc, itf);
-        }
+        beforeMethodInsn(mv);
+        mv.visitMethodInsn(opcode, owner, name, desc, itf);
+        afterMethodInsn(mv);
     }
 
-    abstract protected void insertBefore(MethodVisitor mv);
-    abstract protected void insertAfter(MethodVisitor mv);
+    abstract protected void beforeMethodInsn(MethodVisitor mv);
+    abstract protected void afterMethodInsn(MethodVisitor mv);
 
-    private boolean match(String owner,String name,String desc){
+    public boolean match(String owner,String name,String desc){
         if (!this.owner.equals(owner)
                 || !this.name.equals(name) ||!this.desc.equals(desc)) {
             return false;
