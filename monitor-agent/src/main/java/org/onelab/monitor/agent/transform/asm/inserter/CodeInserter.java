@@ -3,31 +3,22 @@ package org.onelab.monitor.agent.transform.asm.inserter;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * 方法插入器，针对指定类的指定方法做切入，以某一方法的第n次调用标记切入点，切入
- * 点坐标 {owner，methodName，methodDesc,index}，注意：每一个切入点只允许设
- * 置不超过一个方法插入器。
+ * 方法插入器，针对指定类的指定方法做切入，以某一方法的第n次调用标记切入点，
+ * 切入点坐标 {owner，methodName，methodDesc,index}，注意：每一个切入
+ * 点只允许对应一个方法插入器。
  * Created by chunliangh on 14-12-3.
  */
 public abstract class CodeInserter {
-    //切入点的类名
-    private String owner;
-    //切入点的方法名
-    private String name;
-    //切入点的方法描述
-    private String desc;
-    //方法命令被调用的次数
-    private int index;
+
+    private final InsertPoint insertPoint;
     //校验前方法被调用的次数
     private int currIndex;
 
-    public CodeInserter(String owner, String name, String desc, int index) {
-        if(index<1 || owner==null || name==null || desc==null){
+    public CodeInserter(InsertPoint insertPoint) {
+        if (insertPoint == null) {
             throw new IllegalArgumentException();
         }
-        this.owner = owner;
-        this.name = name;
-        this.desc = desc;
-        this.index = index;
+        this.insertPoint = insertPoint;
     }
 
     /**
@@ -65,12 +56,13 @@ public abstract class CodeInserter {
      * @return
      */
     public boolean match(String owner,String name,String desc){
-        if (!this.owner.equals(owner)
-                || !this.name.equals(name) ||!this.desc.equals(desc)) {
+        if (!insertPoint.getPointType().equals(owner)
+                || !insertPoint.getPointMethod().equals(name)
+                || !insertPoint.getPointDesc().equals(desc)) {
             return false;
         }
         currIndex++;
-        if (index==currIndex) return true;
+        if (insertPoint.getPointIndex()==currIndex) return true;
         return false;
     }
 }
