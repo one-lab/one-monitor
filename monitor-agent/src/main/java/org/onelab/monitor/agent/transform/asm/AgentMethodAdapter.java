@@ -106,7 +106,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
                     .append(methodName).append("#").append(methodDesc).append("],")
                     .append("point[").append(owner).append("#")
                     .append(name).append("#").append(desc).append("#")
-                    .append(inserter.getCurrIndex()).append("]");
+                    .append(inserter.getPointIndex()).append("]");
             System.out.println(stringBuilder);
         }
     }

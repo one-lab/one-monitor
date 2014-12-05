@@ -18,8 +18,8 @@ public abstract class CodeInserter {
     private final String targetMethodDesc ;
     //代码切入点：methodInsn对应的位置
     private final InsertPoint insertPoint;
-    //校验前方法被调用的次数
-    private int currIndex;
+
+    private int _currIndex;
 
     public CodeInserter(String targetType, String targetMethod, String targetMethodDesc,InsertPoint insertPoint) {
         if (targetType ==null || targetMethod ==null || targetMethodDesc ==null || insertPoint == null) {
@@ -60,8 +60,7 @@ public abstract class CodeInserter {
                 || !insertPoint.getPointDesc().equals(desc)) {
             return false;
         }
-        currIndex++;
-        if (insertPoint.getPointIndex()==currIndex) return true;
+        if (insertPoint.getPointIndex()==++_currIndex) return true;
         return false;
     }
 
@@ -77,7 +76,7 @@ public abstract class CodeInserter {
         return targetMethodDesc;
     }
 
-    public int getCurrIndex(){
-        return currIndex;
+    public int getPointIndex(){
+        return insertPoint.getPointIndex();
     }
 }
