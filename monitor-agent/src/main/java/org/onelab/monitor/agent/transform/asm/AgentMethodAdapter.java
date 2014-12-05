@@ -2,6 +2,7 @@ package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
+import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.TransformedMethod;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserter;
@@ -103,11 +104,10 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
             StringBuilder stringBuilder = new StringBuilder()
                     .append("CodeInserter=").append(inserter.getClass().getName()).append(":")
                     .append("target[").append(className).append("#")
-                    .append(methodName).append("#").append(methodDesc).append("],")
+                    .append(methodName+methodDesc).append("],")
                     .append("point[").append(owner).append("#")
-                    .append(name).append("#").append(desc).append("#")
-                    .append(inserter.getPointIndex()).append("]");
-            System.out.println(stringBuilder);
+                    .append(name+desc).append("#").append(inserter.getPointIndex()).append("]");
+            Agent.logger.info(stringBuilder.toString());
         }
     }
 
@@ -126,6 +126,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         super.visitEnd();
         if (!hasTransformedMethod){
             super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+            Agent.logger.info("TransformedMethod:"+methodName+methodDesc);
         }
     }
 }

@@ -1,6 +1,9 @@
 package org.onelab.monitor.agent.domain;
 
-import com.alibaba.fastjson.JSONObject;
+import org.onelab.monitor.agent.Agent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 方法监听处理器
@@ -10,22 +13,20 @@ public class AgentHandler {
 
     public static void onEnter(int flag,String className,String methodName,String methodDesc,Object thisObj, Object[] args){
         StringBuilder sb = new StringBuilder()
-                .append("==>onEnter:")
-                .append("class:").append(className)
-                .append(",method:").append(methodName);
-        System.out.println(sb);
+                .append("==>onEnter -- ").append(className).append("#").append(methodName);
+        Agent.logger.info(sb.toString());
         if (args!=null){
-            JSONObject jsonObject = new JSONObject();
+            Map<String,Object> map = new HashMap<String, Object>();
             for (int i=0;i<args.length;i++){
-                jsonObject.put("args["+i+"]",args[i]!=null?args[i].toString():null);
+                map.put("args["+i+"]",args[i]!=null?args[i].toString():null);
             }
-            System.out.println("    args:"+jsonObject.toJSONString());
+            Agent.logger.info("--------args:"+map.toString());
         }
     }
     public static void onFail(Throwable th){
-        System.out.println("==> onFail {"+th+"}");
+        Agent.logger.info("==> onFail -- "+th);
     }
     public static void onExit(Object returnValue){
-        System.out.println("==> onExit "+returnValue);
+        Agent.logger.info("==> onExit -- "+returnValue);
     }
 }

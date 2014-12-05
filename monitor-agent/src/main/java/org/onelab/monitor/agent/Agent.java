@@ -23,18 +23,24 @@ public class Agent {
         instrumentation = inst;
         try {
             start();
+            logger.info("One-Monior-Agent start success!");
         }catch (Exception e){
-            //输出异常信息
+            logger.error("One-Monior-Agent start error!",e);
         }
     }
     private static void start() throws Exception{
         config.init();
+        logger.info("AgentConfig init success...");
         Consumer.start();
+        logger.info("Consumer start success...");
         instrumentation.addTransformer(agentTransformer);
+        logger.info("AgentTransformer has bean registered...");
         setupShutdownHooks();
+        logger.info("setupShutdownHooks success...");
     }
     private static void stop(){
         instrumentation.removeTransformer(agentTransformer);
+        logger.info("One-Monior-Agent stop success!");
     }
     private static void setupShutdownHooks() {
         Thread thread = new Thread("OneMoniorAgent_Cleaner"){

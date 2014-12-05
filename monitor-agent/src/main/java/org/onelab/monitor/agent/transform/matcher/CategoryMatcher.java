@@ -8,7 +8,7 @@ public class CategoryMatcher {
     public static final String http = "http";
     public static final String pojo = "pojo";
     public static final String jdbc = "jdbc";
-    public static String getPointCutName(String className,String supperName,String[] interfaces,String methodName,String methodDescription){
-        return http;
+    public static int getPointCutName(String className,String supperName,String[] interfaces,String methodName,String methodDescription){
+        return 0;
     }
 }

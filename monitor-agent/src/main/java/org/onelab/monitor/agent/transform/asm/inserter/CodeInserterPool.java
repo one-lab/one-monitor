@@ -42,7 +42,9 @@ public class CodeInserterPool {
             }
         }
         if (insertCount>1){
-            throw new IllegalStateException("there are "+insertCount+" CodeInserters in same codeInsertPoint which required one!");
+            String info = "there are "+insertCount+" CodeInserters in same codeInsertPoint which required one!";
+            Agent.logger.error(info);
+            throw new IllegalStateException(info);
         }
         return inserter;
     }
@@ -56,6 +58,7 @@ public class CodeInserterPool {
                     CodeInserterBuilder codeInserterBuilder = clazz.newInstance();
                     CodeInserterPool.addCodeInserter(codeInserterBuilder.build());
                 } catch (Exception e) {
+                    Agent.logger.error("CodeInserterPool init error!",e);
                     throw new RuntimeException(e);
                 }
             }

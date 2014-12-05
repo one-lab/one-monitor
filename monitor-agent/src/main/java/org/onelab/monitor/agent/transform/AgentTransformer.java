@@ -21,7 +21,6 @@ public class AgentTransformer implements ClassFileTransformer {
         if (TypeMatcher.match(className)) {
             AgentClassReader classReader = new AgentClassReader(classfileBuffer);
             if (classReader.usable()) {
-                System.out.println(className);
                 AgentClassWriter classWriter = new AgentClassWriter(classReader, loader);
                 AgentClassAdapter classAdapter = new AgentClassAdapter(classWriter,className,classReader.getSuperName(),classReader.getInterfaces());
                 classReader.accept(classAdapter, AgentUtil.getClassReaderFlags());

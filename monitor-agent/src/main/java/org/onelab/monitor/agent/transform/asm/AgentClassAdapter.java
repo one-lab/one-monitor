@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
+import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.matcher.CategoryMatcher;
 import org.onelab.monitor.agent.transform.TransformedClass;
@@ -22,6 +23,7 @@ public class AgentClassAdapter extends ClassVisitor {
         this.className = className;
         this.supperName = supperName;
         this.interfaces = interfaces;
+        Agent.logger.info("class:"+className+" is being transformed...");
     }
 
     @Override
@@ -38,8 +40,8 @@ public class AgentClassAdapter extends ClassVisitor {
         if(!MethodMatcher.match(className,name,description,access)){
             return mv;
         }else{
-            String pointCutName = CategoryMatcher.getPointCutName(className, supperName, interfaces, name, description);
-            return new AgentMethodAdapter(100,className,mv,access,name,description);
+            int flag = CategoryMatcher.getPointCutName(className, supperName, interfaces, name, description);
+            return new AgentMethodAdapter(flag,className,mv,access,name,description);
         }
     }
 
@@ -47,6 +49,7 @@ public class AgentClassAdapter extends ClassVisitor {
         super.visitEnd();
         if (!hasTransformedClass){
             super.visitAnnotation(Type.getDescriptor(TransformedClass.class), true);
+            Agent.logger.info("class:"+className+" transformed success.");
         }
     }
 }
