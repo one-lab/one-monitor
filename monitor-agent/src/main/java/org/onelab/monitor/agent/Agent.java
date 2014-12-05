@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent;
 
 import org.onelab.monitor.agent.config.AgentConfig;
+import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.transform.AgentTransformer;
 import org.onelab.monitor.agent.transform.asm.AgentUtil;
 import org.onelab.monitor.agent.transport.Consumer;
@@ -11,6 +12,9 @@ import java.lang.instrument.Instrumentation;
  * Created by chunliangh on 14-11-13.
  */
 public class Agent {
+
+    public static AgentLogger logger = new AgentLogger();
+    public static AgentConfig config = new AgentConfig();
 
     private static AgentTransformer agentTransformer = new AgentTransformer();
     private static Instrumentation instrumentation ;
@@ -24,7 +28,7 @@ public class Agent {
         }
     }
     private static void start() throws Exception{
-        AgentConfig.init();
+        config.init();
         Consumer.start();
         instrumentation.addTransformer(agentTransformer);
         setupShutdownHooks();

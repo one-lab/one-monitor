@@ -1,6 +1,6 @@
 package org.onelab.monitor.agent.transform.asm.inserter;
 
-import org.onelab.monitor.agent.config.AgentConfig;
+import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.transform.asm.inserter.builder.CodeInserterBuilder;
 
 import java.util.*;
@@ -48,7 +48,7 @@ public class CodeInserterPool {
     }
 
     public static void init(){
-        List<String> codeInserterBuilders = AgentConfig.getCodeInserterBuilders();
+        List<String> codeInserterBuilders = Agent.config.getCodeInserterBuilders();
         if (codeInserterBuilders!=null){
             for (String builder:codeInserterBuilders){
                 try {

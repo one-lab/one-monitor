@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.transform.matcher.method;
 
 import org.objectweb.asm.Opcodes;
-import org.onelab.monitor.agent.config.AgentConfig;
+import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.matcher.method.checker.BlackListChecker;
 import org.onelab.monitor.agent.transform.matcher.method.checker.MethodChecker;
@@ -40,9 +40,9 @@ public class MethodMatcher {
     }
 
     private static void init(){
-        canAccPrivateMethod = AgentConfig.getPrivateMethod();
-        canAccSetMethod = AgentConfig.getSetMethod();
-        hasMethodFilter = AgentConfig.getMethodFilter();
+        canAccPrivateMethod = Agent.config.getPrivateMethod();
+        canAccSetMethod = Agent.config.getSetMethod();
+        hasMethodFilter = Agent.config.getMethodFilter();
         if (hasMethodFilter){
             methodFilters = new LinkedList<MethodChecker>();
             methodFilters.add(new WhiteListChecker());

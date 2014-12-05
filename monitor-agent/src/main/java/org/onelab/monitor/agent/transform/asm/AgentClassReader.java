@@ -2,7 +2,7 @@ package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
-import org.onelab.monitor.agent.config.AgentConfig;
+import org.onelab.monitor.agent.Agent;
 
 /**
  * monitor-agent类载入器
@@ -10,7 +10,7 @@ import org.onelab.monitor.agent.config.AgentConfig;
  */
 public class AgentClassReader extends ClassReader {
 
-    private static final boolean canAccPrivate = AgentConfig.getPrivateClass();
+    private static final boolean canAccPrivate = Agent.config.getPrivateClass();
 
     public AgentClassReader(byte[] b) {
         super(b);

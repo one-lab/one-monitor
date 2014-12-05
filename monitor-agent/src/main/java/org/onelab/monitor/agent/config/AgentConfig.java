@@ -10,51 +10,55 @@ import java.util.regex.Pattern;
  * Created by chunliangh on 14-11-13.
  */
 public class AgentConfig {
-    private static boolean privateClass;
-    private static boolean privateMethod;
-    private static boolean setMethod;
-    private static boolean methodFilter;
-    private static List<String> codeInserterBuilders;
+    private boolean privateClass;
+    private boolean privateMethod;
+    private boolean setMethod;
+    private boolean methodFilter;
+    private List<String> codeInserterBuilders;
 
-    public static void init() throws Exception{
+    public void init() throws Exception{
         codeInserterBuilders = new LinkedList<String>();
         codeInserterBuilders.add("org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder");
     }
 
-    public static String getWhiteListPatten() {
+    public String getWhiteListPatten() {
         return "com/jumei/.*";
     }
 
-    public static String getBlackListPatten() {
+    public String getBlackListPatten() {
         return "com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*";
     }
 
-    public static String getMethodWhiteListPatten() {
+    public String getMethodWhiteListPatten() {
         return null;
     }
 
-    public static String getMethodBlackListPatten() {
+    public String getMethodBlackListPatten() {
         return null;
     }
 
-    public static boolean getPrivateClass() {
+    public boolean getPrivateClass() {
         return privateClass;
     }
 
-    public static boolean getPrivateMethod() {
+    public boolean getPrivateMethod() {
         return privateMethod;
     }
 
-    public static boolean getSetMethod() {
+    public boolean getSetMethod() {
         return setMethod;
     }
 
-    public static boolean getMethodFilter() {
+    public boolean getMethodFilter() {
         return methodFilter;
     }
 
-    public static String getForceListPatten() {
+    public String getForceListPatten() {
         return null;
+    }
+
+    public List<String> getCodeInserterBuilders() {
+        return codeInserterBuilders;
     }
 
     public static void main(String[] args){
@@ -62,9 +66,5 @@ public class AgentConfig {
         Matcher m = p.matcher("ass");
 //        m.reset("ass");
         System.out.println(m.matches());
-    }
-
-    public static List<String> getCodeInserterBuilders() {
-        return codeInserterBuilders;
     }
 }
