@@ -7,8 +7,6 @@ import org.onelab.monitor.agent.transform.TransformedMethod;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserter;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserterPool;
 
-import java.util.List;
-
 /**
  * monitor-agent方法适配器
  * Created by chunliangh on 14-11-14.
@@ -96,24 +94,20 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-//        System.out.println("visit mehtod insn:"+owner+"#"+name+"#"+desc);
-        List<CodeInserter> codeInserters = CodeInserterPool.get(className, methodName, methodDesc);
-        boolean matched = false;
-        int insertCount = 0;
-        if (codeInserters != null){
-            for (CodeInserter codeInserter:codeInserters){
-                if (codeInserter.match(owner, name, desc)){
-                    codeInserter.insert(mv,opcode,owner,name,desc,itf);
-                    matched = true;
-                    insertCount++;
-                }
-            }
-        }
-        if (insertCount>1){
-            throw new IllegalStateException("there are "+insertCount+" CodeInserters in same codeInsertPoint which required one!");
-        }
-        if (!matched){
+
+        CodeInserter inserter = CodeInserterPool.get(className, methodName, methodDesc,owner,name,desc);
+        if (inserter == null){
             super.visitMethodInsn(opcode, owner, name, desc, itf);
+        }else{
+            inserter.insert(mv,opcode,owner,name,desc,itf);
+            StringBuilder stringBuilder = new StringBuilder()
+                    .append("CodeInserter=").append(inserter.getClass().getName()).append(":")
+                    .append("target[").append(className).append("#")
+                    .append(methodName).append("#").append(methodDesc).append("],")
+                    .append("point[").append(owner).append("#")
+                    .append(name).append("#").append(desc).append("#")
+                    .append(inserter.getCurrIndex()).append("]");
+            System.out.println(stringBuilder);
         }
     }
 
