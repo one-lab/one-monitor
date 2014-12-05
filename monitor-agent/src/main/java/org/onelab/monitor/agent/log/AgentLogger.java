@@ -8,20 +8,20 @@ import java.util.Date;
  */
 public class AgentLogger {
     public void info(String msg){
-        System.out.println(new Date().toLocaleString()+"-AgentLogger INFO:"+msg);
+        System.out.println(new Date().toLocaleString()+"-AgentLogger INFO : "+msg);
     }
     public void warn(String msg){
-        System.out.println(new Date().toLocaleString()+"-AgentLogger WARN:"+msg);
+        System.out.println(new Date().toLocaleString()+"-AgentLogger WARN : "+msg);
     }
     public void warn(String msg,Throwable throwable){
-        System.out.println(new Date().toLocaleString()+"-AgentLogger WARN:"+msg);
+        System.out.println(new Date().toLocaleString()+"-AgentLogger WARN : "+msg);
         System.out.println(throwable);
     }
     public void error(String msg){
-        System.out.println(new Date().toLocaleString()+"-AgentLogger ERROR:"+msg);
+        System.out.println(new Date().toLocaleString()+"-AgentLogger ERROR : "+msg);
     }
     public void error(String msg,Throwable throwable){
-        System.out.println(new Date().toLocaleString()+"-AgentLogger ERROR:"+msg);
+        System.out.println(new Date().toLocaleString()+"-AgentLogger ERROR : "+msg);
         System.out.println(throwable);
     }
 }

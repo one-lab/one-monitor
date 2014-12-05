@@ -49,7 +49,7 @@ public class AgentClassAdapter extends ClassVisitor {
         super.visitEnd();
         if (!hasTransformedClass){
             super.visitAnnotation(Type.getDescriptor(TransformedClass.class), true);
-            Agent.logger.info("class:"+className+" transformed success.");
+            Agent.logger.info("class:"+className+" be transformed success.");
         }
     }
 }
