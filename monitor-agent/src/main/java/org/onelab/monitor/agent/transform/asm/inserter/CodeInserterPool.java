@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.transform.asm.inserter;
 
+import org.onelab.monitor.agent.config.AgentConfig;
 import org.onelab.monitor.agent.transform.asm.inserter.builder.CodeInserterBuilder;
-import org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder;
 
 import java.util.*;
 
@@ -12,11 +12,7 @@ public class CodeInserterPool {
 
     private static Map<String,List<CodeInserter>> listenerMap;
 
-    private static List<CodeInserterBuilder> codeInserterBuilders;
-
     static {
-        codeInserterBuilders = new LinkedList<CodeInserterBuilder>();
-        codeInserterBuilders.add(new PicControllerBuilder());
         init();
     }
 
@@ -52,8 +48,17 @@ public class CodeInserterPool {
     }
 
     public static void init(){
-        for (CodeInserterBuilder codeInserterBuilder : codeInserterBuilders){
-            CodeInserterPool.addCodeInserter(codeInserterBuilder.build());
+        List<String> codeInserterBuilders = AgentConfig.getCodeInserterBuilders();
+        if (codeInserterBuilders!=null){
+            for (String builder:codeInserterBuilders){
+                try {
+                    Class<CodeInserterBuilder> clazz = (Class<CodeInserterBuilder>) Class.forName(builder);
+                    CodeInserterBuilder codeInserterBuilder = clazz.newInstance();
+                    CodeInserterPool.addCodeInserter(codeInserterBuilder.build());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 }

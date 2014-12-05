@@ -1,5 +1,7 @@
 package org.onelab.monitor.agent.config;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +14,12 @@ public class AgentConfig {
     private static boolean privateMethod;
     private static boolean setMethod;
     private static boolean methodFilter;
+    private static List<String> codeInserterBuilders;
 
-    public static void init() throws Exception{}
+    public static void init() throws Exception{
+        codeInserterBuilders = new LinkedList<String>();
+        codeInserterBuilders.add("org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder");
+    }
 
     public static String getWhiteListPatten() {
         return "com/jumei/.*";
@@ -56,5 +62,9 @@ public class AgentConfig {
         Matcher m = p.matcher("ass");
 //        m.reset("ass");
         System.out.println(m.matches());
+    }
+
+    public static List<String> getCodeInserterBuilders() {
+        return codeInserterBuilders;
     }
 }
