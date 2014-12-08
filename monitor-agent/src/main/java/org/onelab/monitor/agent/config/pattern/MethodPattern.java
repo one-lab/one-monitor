@@ -77,7 +77,7 @@ public class MethodPattern {
     }
     //默认包含所有
     public boolean matchInclude(String owner,String name,String desc){
-        if (includepattern == null) return false;
+        if (includepattern == null) return true;
         for (MethodDescPattern methodDescPattern:includepattern){
             if (methodDescPattern.match(owner,name,desc))
                 return true;

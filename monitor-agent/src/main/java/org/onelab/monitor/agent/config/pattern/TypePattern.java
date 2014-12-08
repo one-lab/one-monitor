@@ -25,16 +25,15 @@ public class TypePattern {
     }
 
     private void setInclude(Set<String> include){
-        includepatterns = new HashSet<Pattern>();
         if (include != null){
             for (String var:include){
+                if (includepatterns == null){
+                    includepatterns = new HashSet<Pattern>();
+                }
                 if (var!=null){
                     includepatterns.add(Pattern.compile(var));
                 }
             }
-        }
-        if (includepatterns.size() == 0){
-            includepatterns.add(Pattern.compile(Commons.DEFAULT_INCLUDE));
         }
     }
     private void setExclude(Set<String> exclude){
@@ -67,6 +66,7 @@ public class TypePattern {
     }
 
     public boolean matchInclude(String type){
+        if (includepatterns == null) return true;
         for (Pattern pattern:includepatterns){
             if (pattern.matcher(type).matches())
                 return true;

@@ -32,8 +32,6 @@ public interface Commons {
             "org/relaxng/datatype/.*|org/onelab/monitor/agent/.*|org/objectweb/asm/.*";
     //默认排除包，默认情况下符合改匹配的包豆浆被排除，除非在强制列表中添加
     String DEFAULT_EXCLUDE = "net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*";
-    //默认白名单，如果设置了白名单则该默认值将被替换
-    String DEFAULT_INCLUDE = ".*";
 
     String TRUE = "true";
 }
