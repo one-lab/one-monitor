@@ -47,6 +47,27 @@ public class AgentConfig {
         ConfigHandler configHandler = new ConfigHandler();
         parser.parse(jarHome+agent_config_path,configHandler);
         this.config = configHandler.getConfig();
+        Agent.logger.info(
+                new StringBuilder("config-log:{level:").append(config.log.level).append(",console:")
+                        .append(config.log.console).append("}").toString()
+        );
+        Agent.logger.info(
+                new StringBuilder("config-type:{private:").append(config.type.privateOn)
+                        .append(",includepatterns:").append(config.type.includepatterns)
+                        .append(",excludepatterns:").append(config.type.excludepatterns)
+                        .append(",forceincludepatterns:").append(config.type.forceincludepatterns)
+                        .append("}").toString()
+        );
+        Agent.logger.info(
+                new StringBuilder("config-method:{private:").append(config.method.privateOn)
+                        .append(",includepatterns:").append(config.method.includepatterns)
+                        .append(",excludepatterns:").append(config.method.excludepatterns)
+                        .append("}").toString()
+        );
+        Agent.logger.info(
+                new StringBuilder("config-codeinserterbuilders:")
+                        .append(config.codeinserterbuilders).toString()
+        );
     }
 
     private void initJarHome(){

@@ -3,13 +3,13 @@
     <log level="info" console="true"/>
     <type private="false">
         <includepatterns>
-            <includepattern>com/jumei/.*</includepattern>
+            <!--<includepattern>com/ass/.*</includepattern>-->
         </includepatterns>
         <excludepatterns>
-            <excludepattern>net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*</excludepattern>
+            <!--<excludepattern>net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*</excludepattern>-->
         </excludepatterns>
         <forceincludepatterns>
-            <forceincludepattern>org/ass/.*</forceincludepattern>
+            <!--<forceincludepattern>org/ass/.*</forceincludepattern>-->
         </forceincludepatterns>
     </type>
     <method private="false">
