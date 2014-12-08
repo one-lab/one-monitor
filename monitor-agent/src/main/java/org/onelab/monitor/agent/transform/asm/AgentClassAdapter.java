@@ -5,7 +5,7 @@ import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.matcher.CategoryMatcher;
 import org.onelab.monitor.agent.transform.TransformedClass;
-import org.onelab.monitor.agent.transform.matcher.method.MethodMatcher;
+import org.onelab.monitor.agent.transform.matcher.MethodMatcher;
 
 /**
  * monitor-agent类适配器

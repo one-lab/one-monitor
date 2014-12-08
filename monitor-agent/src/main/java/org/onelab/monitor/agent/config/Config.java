@@ -24,10 +24,10 @@ public class Config {
     }
     public class Method{
         public boolean privateOn;
-        public Set<MethodPattern> includepatterns = new HashSet<MethodPattern>();
-        public Set<MethodPattern> excludepatterns = new HashSet<MethodPattern>();
+        public Set<MethodDesc> includepatterns = new HashSet<MethodDesc>();
+        public Set<MethodDesc> excludepatterns = new HashSet<MethodDesc>();
     }
-    public static class MethodPattern{
+    public static class MethodDesc {
         public String owner;
         public String name;
         public String desc;

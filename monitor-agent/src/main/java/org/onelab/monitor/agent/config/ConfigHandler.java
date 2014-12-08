@@ -14,8 +14,8 @@ public class ConfigHandler extends DefaultHandler {
 
     private Node node = new Node();
     private Config config = new Config();
-    private Config.MethodPattern includePattern ;
-    private Config.MethodPattern excludePattern ;
+    private Config.MethodDesc includePattern ;
+    private Config.MethodDesc excludePattern ;
 
     private class Node {
         public String name;
@@ -66,10 +66,10 @@ public class ConfigHandler extends DefaultHandler {
             }
         } else if (node.name.equals(CONFIG_INCLUDE_PATTERN)
                 && node.parent.parent.name.equals(CONFIG_METHOD)){
-            includePattern = new Config.MethodPattern();
+            includePattern = new Config.MethodDesc();
         } else if (node.name.equals(CONFIG_EXCLUDE_PATTERN)
                 && node.parent.parent.name.equals(CONFIG_METHOD)){
-            excludePattern = new Config.MethodPattern();
+            excludePattern = new Config.MethodDesc();
         }
     }
 

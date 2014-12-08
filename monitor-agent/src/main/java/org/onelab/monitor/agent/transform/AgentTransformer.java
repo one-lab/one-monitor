@@ -4,7 +4,7 @@ import org.onelab.monitor.agent.transform.asm.AgentClassAdapter;
 import org.onelab.monitor.agent.transform.asm.AgentClassReader;
 import org.onelab.monitor.agent.transform.asm.AgentClassWriter;
 import org.onelab.monitor.agent.transform.asm.AgentUtil;
-import org.onelab.monitor.agent.transform.matcher.type.TypeMatcher;
+import org.onelab.monitor.agent.transform.matcher.TypeMatcher;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;

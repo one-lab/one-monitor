@@ -10,7 +10,7 @@ import org.onelab.monitor.agent.Agent;
  */
 public class AgentClassReader extends ClassReader {
 
-    private static final boolean canAccPrivate = Agent.config.getPrivateClass();
+    private static final boolean canAccPrivate = Agent.config.getTypePattern().isPrivateOn();
 
     public AgentClassReader(byte[] b) {
         super(b);

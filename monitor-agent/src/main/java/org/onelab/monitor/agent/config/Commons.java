@@ -20,7 +20,6 @@ public interface Commons {
     String AGENT_HANDLER_EXIT_DESC = "(Ljava/lang/Object;)V";
     //排除构造子
     String CONSTRUCTOR_PATTERN = "<(cl)?init>";
-    String SET = "set";
     //非法匹配
     String ILLEGAL_PATTERN = "\\$.*|.*\\$\\$.*|java/.*|javax/.*|sun/.*|sunw/.*|com/sun/.*|oracle/.*|com/oracle/.*|" +
             "javafx/.*|com/javafx/.*|jdk/.*|classes/.*|netscape/.*|apple/.*|com/apple/.*|toolbarButtonGraphics/.*|" +

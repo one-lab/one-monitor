@@ -1,14 +1,12 @@
 package org.onelab.monitor.agent.config;
 
 import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.config.pattern.MethodPattern;
+import org.onelab.monitor.agent.config.pattern.TypePattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 系统配置
@@ -20,16 +18,22 @@ public class AgentConfig {
     private String jarHome;
     private String agent_config_path = "agent-config.xml";
 
-    private boolean privateClass;
-    private boolean privateMethod;
-    private boolean setMethod;
-    private boolean methodFilter;
+    private TypePattern typePattern;
+    private MethodPattern methodPattern;
     private Set<String> codeInserterBuilders;
 
     public void init() throws Throwable{
-//        codeInserterBuilders = new LinkedList<String>();
-//        codeInserterBuilders.add("org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder");
         initConfig();
+        initAgentConfig();
+    }
+
+    private void initAgentConfig(){
+        typePattern = new TypePattern(config.type.privateOn,
+                config.type.includepatterns,config.type.excludepatterns,config.type.forceincludepatterns
+        );
+        methodPattern = new MethodPattern(config.method.privateOn,
+                config.method.includepatterns,config.method.excludepatterns
+        );
         codeInserterBuilders = config.codeinserterbuilders;
     }
 
@@ -44,7 +48,7 @@ public class AgentConfig {
         this.config = configHandler.getConfig();
     }
 
-    public void initJarHome(){
+    private void initJarHome(){
         jarHome = Agent.class.getClassLoader().getResource("one-monitor-agent-inner-file").getPath();
         if (jarHome.contains("!")){
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("!"));
@@ -54,59 +58,18 @@ public class AgentConfig {
         }
     }
 
-    public String getWhiteListPatten() {
-        return "com/jumei/.*";
-    }
-
-    public String getBlackListPatten() {
-        return "com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*";
-    }
-
-    public String getMethodWhiteListPatten() {
-        return null;
-    }
-
-    public String getMethodBlackListPatten() {
-        return null;
-    }
-
-    public boolean getPrivateClass() {
-        return privateClass;
-    }
-
-    public boolean getPrivateMethod() {
-        return privateMethod;
-    }
-
-    public boolean getSetMethod() {
-        return setMethod;
-    }
-
-    public boolean getMethodFilter() {
-        return methodFilter;
-    }
-
-    public String getForceListPatten() {
-        return null;
-    }
-
     public Set<String> getCodeInserterBuilders() {
         return codeInserterBuilders;
     }
 
+    public TypePattern getTypePattern() {
+        return typePattern;
+    }
+
+    public MethodPattern getMethodPattern() {
+        return methodPattern;
+    }
+
     public static void main(String[] args){
-        Pattern p = Pattern.compile("a.*");
-        Matcher m = p.matcher("ass");
-//        m.reset("ass");
-        System.out.println(m.matches());
-        System.out.println(new AgentConfig().agent_config_path);
-        String url = "Users/daojian/git/one-lab/one-monitor/monitor-agent/target/monitor-agent-1.0.0-SNAPSHOT-jar-with-dependencies.jar!/one-monitor-agent-inner-file";
-        url = url.substring(0,url.lastIndexOf("!"));
-        url = url.substring(0,url.lastIndexOf("/"));
-        System.out.println(url);
-        //Users/daojian/git/one-lab/one-monitor/monitor-agent/target/classes/one-monitor-agent-inner-file
-        //Users/daojian/git/one-lab/one-monitor/monitor-agent/target/monitor-agent-1.0.0-SNAPSHOT-jar-with-dependencies.jar!/one-monitor-agent-inner-file
-        ///Users/daojian/git/one-lab/one-monitor/monitor-agent/target/classes/config/agent-config.xml
-        ///Users/daojian/git/one-lab/one-monitor/monitor-agent/target/monitor-agent-1.0.0-SNAPSHOT-jar-with-dependencies.jar!/config/agent-config.xml
     }
 }
