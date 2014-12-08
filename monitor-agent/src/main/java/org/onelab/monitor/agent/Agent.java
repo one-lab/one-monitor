@@ -24,11 +24,11 @@ public class Agent {
         try {
             start();
             logger.info("One-Monior-Agent start success!");
-        }catch (Exception e){
-            logger.error("One-Monior-Agent start error!",e);
+        }catch (Throwable t){
+            logger.error("One-Monior-Agent start error!",t);
         }
     }
-    private static void start() throws Exception{
+    private static void start() throws Throwable{
         config.init();
         logger.info("AgentConfig init success...");
         Consumer.start();

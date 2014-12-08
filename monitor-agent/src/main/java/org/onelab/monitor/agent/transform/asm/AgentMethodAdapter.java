@@ -95,8 +95,17 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-
-        CodeInserter inserter = CodeInserterPool.get(className, methodName, methodDesc,owner,name,desc);
+        CodeInserter inserter = null;
+        try {
+            inserter = CodeInserterPool.get(className, methodName, methodDesc,owner,name,desc);
+        } catch (Throwable t){
+            StringBuilder stringBuilder = new StringBuilder()
+                    .append("CodeInserterPool get CodeInserter error:")
+                    .append("target[").append(className).append("#").append(methodName+methodDesc).append("],")
+                    .append("point[").append(owner).append("#").append(name+desc)
+                    .append("#").append(inserter.getPointIndex()).append("]");
+            Agent.logger.warn(stringBuilder.toString());
+        }
         if (inserter == null){
             super.visitMethodInsn(opcode, owner, name, desc, itf);
         }else{
