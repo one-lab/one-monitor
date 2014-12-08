@@ -16,7 +16,8 @@ public class AgentConfig {
 
     private Config config;
     private String jarHome;
-    private String agent_config_path = "agent-config.xml";
+    private String agent_config_path = Commons.AGENT_CONFIG_PATH;
+    private String agent_home_file = Commons.AGENT_HOME_FILE;
 
     private TypePattern typePattern;
     private MethodPattern methodPattern;
@@ -39,7 +40,7 @@ public class AgentConfig {
 
     private void initConfig() throws Throwable{
         initJarHome();
-        System.out.println("agent_config_path:"+agent_config_path);
+        Agent.logger.info("agent_config_path:"+jarHome+agent_config_path);
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setValidating(true);//开启验证XML功能
         SAXParser parser = factory.newSAXParser();
@@ -49,7 +50,7 @@ public class AgentConfig {
     }
 
     private void initJarHome(){
-        jarHome = Agent.class.getClassLoader().getResource("one-monitor-agent-inner-file").getPath();
+        jarHome = Agent.class.getClassLoader().getResource(agent_home_file).getPath();
         if (jarHome.contains("!")){
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("!"));
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("/")+1);

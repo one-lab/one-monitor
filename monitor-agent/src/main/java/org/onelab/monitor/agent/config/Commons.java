@@ -18,6 +18,11 @@ public interface Commons {
     String AGENT_HANDLER_ENTER_DESC = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V";
     String AGENT_HANDLER_FAIL_DESC = "(Ljava/lang/Throwable;)V";
     String AGENT_HANDLER_EXIT_DESC = "(Ljava/lang/Object;)V";
+
+    String AGENT_CONFIG_PATH = "agent-config.xml";
+    String AGENT_HOME_FILE = "one-monitor-agent-inner-file";
+
+
     //排除构造子
     String CONSTRUCTOR_PATTERN = "<(cl)?init>";
     //非法匹配
