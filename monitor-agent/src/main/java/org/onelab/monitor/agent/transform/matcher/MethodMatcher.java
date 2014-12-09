@@ -16,6 +16,8 @@ public class MethodMatcher {
     public static boolean match(String className, String name, String description, int access) {
 
         if (name.matches(Commons.CONSTRUCTOR_PATTERN)) return false;
+        if ((access & Opcodes.ACC_NATIVE) !=0) return false;
+        if ((access & Opcodes.ACC_ABSTRACT) !=0) return false;
         if (!methodPattern.isPrivateOn() && (access & Opcodes.ACC_PRIVATE)!=0) return false;
         boolean canTransform;
         canTransform = methodPattern.matchInclude(className,name,description);

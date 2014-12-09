@@ -26,6 +26,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     public AgentMethodAdapter(int processFlag, String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
+        Agent.logger.info(" Method:"+methodName+methodDesc+" is being transformed...");
         this.processFlag = processFlag;
         this.className = className;
         this.methodName = methodName;

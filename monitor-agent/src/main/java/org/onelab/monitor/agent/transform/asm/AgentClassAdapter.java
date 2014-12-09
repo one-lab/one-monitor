@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
+import org.objectweb.asm.commons.JSRInlinerAdapter;
 import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
 import org.onelab.monitor.agent.transform.matcher.CategoryMatcher;
@@ -41,7 +42,10 @@ public class AgentClassAdapter extends ClassVisitor {
             return mv;
         }else{
             int flag = CategoryMatcher.getPointCutName(className, supperName, interfaces, name, description);
-            return new AgentMethodAdapter(flag,className,mv,access,name,description);
+            return new JSRInlinerAdapter(
+                    new AgentMethodAdapter(flag,className,mv,access,name,description),
+                    access, name, description, signature, exceptions
+            );
         }
     }
 
