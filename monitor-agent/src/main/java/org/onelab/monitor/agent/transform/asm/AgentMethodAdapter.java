@@ -20,8 +20,9 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     private int processFlag;
 
     private boolean hasTransformedMethod = false;
+    private int exitFlag = 1;
 
-    private Label startFinally = new Label();
+    private Label startLabel= new Label();
 
     public AgentMethodAdapter(int processFlag, String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
@@ -61,6 +62,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         int th = newLocal(thType);
         storeLocal(th);
         loadLocal(th);
+        super.visitLdcInsn(exitFlag);
         super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_FAIL, AGENT_HANDLER_FAIL_DESC, false);
     }
 
@@ -77,13 +79,14 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
             }
             super.box(Type.getReturnType(this.methodDesc));
         }
+        super.visitLdcInsn(exitFlag);
         super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_EXIT, AGENT_HANDLER_EXIT_DESC, false);
     }
 
     @Override
     public void visitCode() {
         super.visitCode();
-        super.visitLabel(this.startFinally);
+        super.visitLabel(this.startLabel);
     }
 
     @Override
@@ -96,6 +99,9 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+        if (className.equals(owner) && methodName.equals(name) && methodDesc.equals(desc)){
+            exitFlag = 2;
+        }
         CodeInserter inserter = null;
         try {
             inserter = CodeInserterPool.get(className, methodName, methodDesc,owner,name,desc);
@@ -123,9 +129,9 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        Label endFinally = new Label();
-        super.visitTryCatchBlock(this.startFinally, endFinally, endFinally, null);
-        super.visitLabel(endFinally);
+        Label endLabel = new Label();
+        super.visitTryCatchBlock(this.startLabel, endLabel, endLabel, null);
+        super.visitLabel(endLabel);
         exitWithException();
         super.visitInsn(Opcodes.ATHROW);
         super.visitMaxs(0, 0);

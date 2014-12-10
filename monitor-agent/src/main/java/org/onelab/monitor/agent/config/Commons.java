@@ -16,8 +16,8 @@ public interface Commons {
     String AGENT_HANDLER_FAIL = "onFail";
     String AGENT_HANDLER_EXIT = "onExit";
     String AGENT_HANDLER_ENTER_DESC = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V";
-    String AGENT_HANDLER_FAIL_DESC = "(Ljava/lang/Throwable;)V";
-    String AGENT_HANDLER_EXIT_DESC = "(Ljava/lang/Object;)V";
+    String AGENT_HANDLER_FAIL_DESC = "(Ljava/lang/Throwable;I)V";
+    String AGENT_HANDLER_EXIT_DESC = "(Ljava/lang/Object;I)V";
 
     String AGENT_CONFIG_PATH = "agent-config.xml";
     String AGENT_HOME_FILE = "one-monitor-agent-inner-file";

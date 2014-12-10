@@ -23,10 +23,10 @@ public class AgentHandler {
             Agent.logger.info("--------args:"+map.toString());
         }
     }
-    public static void onFail(Throwable th){
-        Agent.logger.info("==> onFail -- "+th);
+    public static void onFail(Throwable th,int exitFlag){
+        Agent.logger.info("==> onFail --"+exitFlag+"-- "+th);
     }
-    public static void onExit(Object returnValue){
-        Agent.logger.info("==> onExit -- "+returnValue);
+    public static void onExit(Object returnValue,int exitFlag){
+        Agent.logger.info("==> onExit --"+exitFlag+"-- "+returnValue);
     }
 }
