@@ -1,0 +1,13 @@
+#ONE-Monitor-Agent设计文档
+##Conifg
+config包负责提供配置文件的解析及存储
+##Domain
+domain负责处理监控数据
+##Log
+log包负责处理打印系统日志
+##Transform
+transform包负责字节码加强
+##Transport
+transport包负责与server通信传输数据
+##Agent
+Agent类是ONE-Monitor-Agent的启动类
