@@ -4,8 +4,6 @@ import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.pattern.MethodPattern;
 import org.onelab.monitor.agent.config.pattern.TypePattern;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.util.Set;
 
 /**
@@ -29,11 +27,11 @@ public class AgentConfig {
     }
 
     private void initAgentConfig(){
-        typePattern = new TypePattern(config.type.privateOn,
-                config.type.includepatterns,config.type.excludepatterns,config.type.forceincludepatterns
+        typePattern = new TypePattern(config.typePrivateOn,
+                config.typeIncludepatterns,config.typeExcludepatterns,config.typeForceincludepatterns
         );
-        methodPattern = new MethodPattern(config.method.privateOn,
-                config.method.includepatterns,config.method.excludepatterns
+        methodPattern = new MethodPattern(config.methodPrivateOn,
+                config.methodIncludepatterns,config.methodExcludepatterns
         );
         codeInserterBuilders = config.codeinserterbuilders;
     }
@@ -41,27 +39,22 @@ public class AgentConfig {
     private void initConfig() throws Throwable{
         initJarHome();
         Agent.logger.info("agent_config_path:"+jarHome+agent_config_path);
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        factory.setValidating(true);//开启验证XML功能
-        SAXParser parser = factory.newSAXParser();
-        ConfigHandler configHandler = new ConfigHandler();
-        parser.parse(jarHome+agent_config_path,configHandler);
-        this.config = configHandler.getConfig();
+        this.config = Config.init(jarHome+agent_config_path);
         Agent.logger.info(
-                new StringBuilder("config-log:{level:").append(config.log.level).append(",console:")
-                        .append(config.log.console).append("}").toString()
+                new StringBuilder("config-log:{level:").append(config.logLevel).append(",console:")
+                        .append(config.logConsole).append("}").toString()
         );
         Agent.logger.info(
-                new StringBuilder("config-type:{private:").append(config.type.privateOn)
-                        .append(",includepatterns:").append(config.type.includepatterns)
-                        .append(",excludepatterns:").append(config.type.excludepatterns)
-                        .append(",forceincludepatterns:").append(config.type.forceincludepatterns)
+                new StringBuilder("config-type:{private:").append(config.typePrivateOn)
+                        .append(",includepatterns:").append(config.typeIncludepatterns)
+                        .append(",excludepatterns:").append(config.typeExcludepatterns)
+                        .append(",forceincludepatterns:").append(config.typeForceincludepatterns)
                         .append("}").toString()
         );
         Agent.logger.info(
-                new StringBuilder("config-method:{private:").append(config.method.privateOn)
-                        .append(",includepatterns:").append(config.method.includepatterns)
-                        .append(",excludepatterns:").append(config.method.excludepatterns)
+                new StringBuilder("config-method:{private:").append(config.methodPrivateOn)
+                        .append(",includepatterns:").append(config.methodIncludepatterns)
+                        .append(",excludepatterns:").append(config.methodExcludepatterns)
                         .append("}").toString()
         );
         Agent.logger.info(
