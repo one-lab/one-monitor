@@ -15,6 +15,14 @@ public class AgentClassWriter extends ClassWriter {
         this.classLoader = loader;
     }
 
+    /**
+     * 获取公共父类
+     * @param type1
+     *            the internal name of a class.
+     * @param type2
+     *            the internal name of another class.
+     * @return
+     */
     @Override
     protected String getCommonSuperClass(final String type1, final String type2) {
         Class<?> c, d;

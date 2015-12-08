@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <log level="info" console="true"/>
-    <type private="false">
+    <type>
         <includepatterns>
             <!--<includepattern>com/ass/.*</includepattern>-->
         </includepatterns>
@@ -12,7 +12,7 @@
             <!--<forceincludepattern>org/ass/.*</forceincludepattern>-->
         </forceincludepatterns>
     </type>
-    <method private="false">
+    <method>
         <includepatterns>
             <!--<includepattern>-->
                 <!--<owner>.*</owner>-->

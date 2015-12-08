@@ -1,8 +1,8 @@
 package org.onelab.monitor.agent.config;
 
 import org.onelab.monitor.agent.Agent;
-import org.onelab.monitor.agent.config.pattern.MethodPattern;
-import org.onelab.monitor.agent.config.pattern.TypePattern;
+import org.onelab.monitor.agent.transform.pattern.MethodPattern;
+import org.onelab.monitor.agent.transform.pattern.TypePattern;
 
 import java.util.Set;
 
@@ -27,12 +27,13 @@ public class AgentConfig {
     }
 
     private void initAgentConfig(){
-        typePattern = new TypePattern(config.typePrivateOn,
-                config.typeIncludepatterns,config.typeExcludepatterns,config.typeForceincludepatterns
-        );
-        methodPattern = new MethodPattern(config.methodPrivateOn,
-                config.methodIncludepatterns,config.methodExcludepatterns
-        );
+        typePattern = new TypePattern(
+            config.typeIncludepatterns,
+            config.typeExcludepatterns,
+            config.typeForceincludepatterns);
+        methodPattern = new MethodPattern(
+            config.methodIncludepatterns,
+            config.methodExcludepatterns);
         codeInserterBuilders = config.codeinserterbuilders;
     }
 
@@ -45,20 +46,20 @@ public class AgentConfig {
                         .append(config.logConsole).append("}").toString()
         );
         Agent.logger.info(
-                new StringBuilder("config-type:{private:").append(config.typePrivateOn)
-                        .append(",includepatterns:").append(config.typeIncludepatterns)
+                new StringBuilder("config-type: ")
+                        .append("{includepatterns:").append(config.typeIncludepatterns)
                         .append(",excludepatterns:").append(config.typeExcludepatterns)
                         .append(",forceincludepatterns:").append(config.typeForceincludepatterns)
                         .append("}").toString()
         );
         Agent.logger.info(
-                new StringBuilder("config-method:{private:").append(config.methodPrivateOn)
-                        .append(",includepatterns:").append(config.methodIncludepatterns)
+                new StringBuilder("config-method: ")
+                        .append("{includepatterns:").append(config.methodIncludepatterns)
                         .append(",excludepatterns:").append(config.methodExcludepatterns)
                         .append("}").toString()
         );
         Agent.logger.info(
-                new StringBuilder("config-codeinserterbuilders:")
+                new StringBuilder("config-codeinserterbuilders: ")
                         .append(config.codeinserterbuilders).toString()
         );
     }

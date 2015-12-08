@@ -16,13 +16,14 @@ import java.security.ProtectionDomain;
  */
 public class AgentTransformer implements ClassFileTransformer {
 
-    @Override
-    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
+                            ProtectionDomain protectionDomain, byte[] classfileBuffer)
+        throws IllegalClassFormatException {
         if (TypeMatcher.match(className)) {
             AgentClassReader classReader = new AgentClassReader(classfileBuffer);
             if (classReader.usable()) {
                 AgentClassWriter classWriter = new AgentClassWriter(classReader, loader);
-                AgentClassAdapter classAdapter = new AgentClassAdapter(classWriter,className,classReader.getSuperName(),classReader.getInterfaces());
+                AgentClassAdapter classAdapter = new AgentClassAdapter(classWriter,className);
                 classReader.accept(classAdapter, AgentUtil.getClassReaderFlags());
                 return classWriter.toByteArray();
             }

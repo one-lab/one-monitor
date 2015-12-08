@@ -1,4 +1,4 @@
-package org.onelab.monitor.agent.config.pattern;
+package org.onelab.monitor.agent.transform.pattern;
 
 import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Config;
@@ -9,10 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 方法匹配模板
  * Created by chunliangh on 14-12-8.
  */
 public class MethodPattern {
-    private boolean privateOn;
+
     private Set<MethodDescPattern> includepattern;
     private Set<MethodDescPattern> excludepattern;
     private class MethodDescPattern{
@@ -66,18 +67,14 @@ public class MethodPattern {
             }
         }
     }
-    public MethodPattern(boolean privateOn,Set<Config.MethodDesc> include,Set<Config.MethodDesc> exclude){
-        this.privateOn = privateOn;
+    public MethodPattern(Set<Config.MethodDesc> include,Set<Config.MethodDesc> exclude){
         setInclude(include);
         setExclude(exclude);
     }
-    //是否切私有方法
-    public boolean isPrivateOn(){
-        return privateOn;
-    }
+
     //默认包含所有
     public boolean matchInclude(String owner,String name,String desc){
-        if (includepattern == null) return true;
+        if (includepattern == null || includepattern.isEmpty()) return true;
         for (MethodDescPattern methodDescPattern:includepattern){
             if (methodDescPattern.match(owner,name,desc))
                 return true;
@@ -86,11 +83,11 @@ public class MethodPattern {
     }
     //默认包含所有
     public boolean matchExclude(String owner,String name,String desc){
-        if (excludepattern == null) return false;
+        if (excludepattern == null || includepattern.isEmpty()) return true;
         for (MethodDescPattern methodDescPattern:excludepattern){
             if (methodDescPattern.match(owner,name,desc))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 }

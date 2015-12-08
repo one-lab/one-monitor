@@ -26,7 +26,6 @@ public class Config {
     public static final String METHOD_NAME = "name";
     public static final String METHOD_DESC = "desc";
 
-    public static final String PRIVATE = "private";
     public static final String INCLUDEPATTERNS = "includepatterns";
     public static final String INCLUDEPATTERN = "includepattern";
     public static final String EXCLUDEPATTERNS = "excludepatterns";
@@ -54,12 +53,10 @@ public class Config {
     public String logLevel = "info";
     public boolean logConsole ;
 
-    public boolean typePrivateOn ;
     public Set<String> typeIncludepatterns = new HashSet<String>();
     public Set<String> typeExcludepatterns = new HashSet<String>();
     public Set<String> typeForceincludepatterns = new HashSet<String>();
 
-    public boolean methodPrivateOn ;
     public Set<MethodDesc> methodIncludepatterns = new HashSet<MethodDesc>();
     public Set<MethodDesc> methodExcludepatterns = new HashSet<MethodDesc>();
 
@@ -78,12 +75,6 @@ public class Config {
         }
         Node typeNode = NodeSelector.selectNode(node,TYPE,0);
         if (typeNode!=null){
-            if (typeNode.attributes!=null){
-                String isPrivateOn = typeNode.attributes.get(PRIVATE);
-                if ("true".equals(isPrivateOn)){
-                    config.typePrivateOn = true;
-                }
-            }
             Node typeInclude = NodeSelector.selectNode(typeNode,INCLUDEPATTERNS,0);
             List<Node> subs = NodeSelector.selectNodes(typeInclude,INCLUDEPATTERN);
             if (subs!=null){
@@ -109,10 +100,6 @@ public class Config {
         Node methodNode = NodeSelector.selectNode(node,METHOD,0);
         if (methodNode!=null){
             if (methodNode.attributes!=null){
-                String isPrivateOn = typeNode.attributes.get(PRIVATE);
-                if ("true".equals(isPrivateOn)){
-                    config.methodPrivateOn = true;
-                }
                 Node methodInclude = NodeSelector.selectNode(methodNode,INCLUDEPATTERNS,0);
                 List<Node> subs = NodeSelector.selectNodes(methodInclude,INCLUDEPATTERN);
                 if (subs!=null){

@@ -1,6 +1,8 @@
 package org.onelab.monitor.agent.domain;
 
 import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.store.MethodTag;
+import org.onelab.monitor.agent.store.MethodTagStore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,22 +13,35 @@ import java.util.Map;
  */
 public class AgentHandler {
 
-    public static void onEnter(int flag,String className,String methodName,String methodDesc,Object thisObj, Object[] args){
+    public static void onEnter(Object[] args, Object thisObj, String className, String methodName, String methodDesc){
         StringBuilder sb = new StringBuilder()
-                .append("==>onEnter -- ").append(className).append("#").append(methodName);
+            .append("==> enter -- ").append(className)
+            .append("#").append(methodName)
+            .append(":").append(thisObj==null?null:thisObj.toString())
+            .append("--isRecursiveMethod:")
+            .append(
+                MethodTagStore.isTagExist(className, methodName, methodDesc, MethodTag.RECURSIVE));
         Agent.logger.info(sb.toString());
         if (args!=null){
-            Map<String,Object> map = new HashMap<String, Object>();
             for (int i=0;i<args.length;i++){
-                map.put("args["+i+"]",args[i]!=null?args[i].toString():null);
+                Agent.logger.info("        args[" + i + "]=" + (args[i]!=null?args[i].toString():null));
             }
-            Agent.logger.info("--------args:"+map.toString());
         }
     }
-    public static void onFail(Throwable th,int exitFlag){
-        Agent.logger.info("==> onFail --"+exitFlag+"-- "+th);
+    public static void onFail(Throwable throwable, Object thisObj, String className, String methodName, String methodDesc){
+        StringBuilder sb = new StringBuilder()
+            .append("==> fail -- ").append(className)
+            .append("#").append(methodName)
+            .append(":").append(thisObj==null?null:thisObj.toString());
+        Agent.logger.info(sb.toString());
+        Agent.logger.info("        throw "+throwable);
     }
-    public static void onExit(Object returnValue,int exitFlag){
-        Agent.logger.info("==> onExit --"+exitFlag+"-- "+returnValue);
+    public static void onExit(Object returnValue, Object thisObj, String className, String methodName, String methodDesc){
+        StringBuilder sb = new StringBuilder()
+            .append("==> exit -- ").append(className)
+            .append("#").append(methodName)
+            .append(":").append(thisObj==null?null:thisObj.toString());
+        Agent.logger.info(sb.toString());
+        Agent.logger.info("        return "+returnValue);
     }
 }

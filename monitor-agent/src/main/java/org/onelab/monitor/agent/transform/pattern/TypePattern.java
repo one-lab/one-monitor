@@ -1,4 +1,4 @@
-package org.onelab.monitor.agent.config.pattern;
+package org.onelab.monitor.agent.transform.pattern;
 
 import org.onelab.monitor.agent.config.Commons;
 
@@ -7,20 +7,19 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
+ * 类匹配模板
  * Created by chunliangh on 14-12-8.
  */
 public class TypePattern {
-    private boolean privateOn;
     private Set<Pattern> includepatterns;
     private Set<Pattern> excludepatterns;
     private Set<Pattern> forceincludepatterns;
     private Pattern illegalPattern;
 
-    public TypePattern(boolean privateOn, Set<String> include, Set<String> exclude, Set<String> forceinclude) {
-        this.privateOn = privateOn;
+    public TypePattern(Set<String> include, Set<String> exclude, Set<String> forceInclude) {
         setInclude(include);
         setExclude(exclude);
-        setForceInclude(forceinclude);
+        setForceInclude(forceInclude);
         illegalPattern = Pattern.compile(Commons.ILLEGAL_PATTERN);
     }
 
@@ -60,33 +59,26 @@ public class TypePattern {
         }
     }
 
-    //是否切私有类
-    public boolean isPrivateOn(){
-        return privateOn;
-    }
-
     public boolean matchInclude(String type){
-        if (includepatterns == null) return true;
+        if (includepatterns == null || includepatterns.isEmpty()) return true;
         for (Pattern pattern:includepatterns){
-            if (pattern.matcher(type).matches())
-                return true;
+            if (pattern.matcher(type).matches()) return true;
         }
         return false;
     }
 
     public boolean matchExclude(String type){
+        if (excludepatterns == null || excludepatterns.isEmpty()) return true;
         for (Pattern pattern:excludepatterns){
-            if (pattern.matcher(type).matches())
-                return true;
+            if (pattern.matcher(type).matches()) return false;
         }
-        return false;
+        return true;
     }
 
     public boolean matchForceInclude(String type){
-        if (forceincludepatterns == null) return false;
+        if (forceincludepatterns == null || forceincludepatterns.isEmpty()) return false;
         for (Pattern pattern:forceincludepatterns){
-            if (pattern.matcher(type).matches())
-                return true;
+            if (pattern.matcher(type).matches()) return true;
         }
         return false;
     }

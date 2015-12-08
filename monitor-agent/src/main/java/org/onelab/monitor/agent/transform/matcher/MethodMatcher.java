@@ -3,7 +3,7 @@ package org.onelab.monitor.agent.transform.matcher;
 import org.objectweb.asm.Opcodes;
 import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
-import org.onelab.monitor.agent.config.pattern.MethodPattern;
+import org.onelab.monitor.agent.transform.pattern.MethodPattern;
 
 /**
  * 方法匹配器
@@ -14,16 +14,16 @@ public class MethodMatcher {
     private static MethodPattern methodPattern = Agent.config.getMethodPattern();
 
     public static boolean match(String className, String name, String description, int access) {
-
+        // 构造子校验
         if (name.matches(Commons.CONSTRUCTOR_PATTERN)) return false;
+        // 原生方法校验
         if ((access & Opcodes.ACC_NATIVE) !=0) return false;
+        // 抽象方法校验
         if ((access & Opcodes.ACC_ABSTRACT) !=0) return false;
-        if (!methodPattern.isPrivateOn() && (access & Opcodes.ACC_PRIVATE)!=0) return false;
-        boolean canTransform;
-        canTransform = methodPattern.matchInclude(className,name,description);
-        if (canTransform){
-            canTransform = !methodPattern.matchExclude(className,name,description);
-        }
-        return canTransform;
+        // 白名单校验
+        boolean mi = methodPattern.matchInclude(className,name,description);
+        // 黑名单校验
+        boolean me = methodPattern.matchExclude(className,name,description);
+        return mi && me;
     }
 }

@@ -4,6 +4,8 @@ import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Commons;
+import org.onelab.monitor.agent.store.MethodTag;
+import org.onelab.monitor.agent.store.MethodTagStore;
 import org.onelab.monitor.agent.transform.TransformedMethod;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserter;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserterPool;
@@ -17,18 +19,18 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     private String className;
     private String methodName;
     private String methodDesc;
-    private int processFlag;
 
-    private boolean hasTransformedMethod = false;
-    private int exitFlag = 1;
+    /**
+     * 方法标记：是否为递归方法
+     */
+    private boolean isRecursiveMethod = false;
 
     private Label startLabel= new Label();
 
-    public AgentMethodAdapter(int processFlag, String className, final MethodVisitor mv,
+    public AgentMethodAdapter(String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
         Agent.logger.info(" Method:"+methodName+methodDesc+" is being transformed...");
-        this.processFlag = processFlag;
         this.className = className;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
@@ -36,17 +38,17 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
 
     @Override
     protected void onMethodEnter() {
-        super.visitLdcInsn(processFlag);
-        super.visitLdcInsn(className);
-        super.visitLdcInsn(methodName);
-        super.visitLdcInsn(methodDesc);
+        super.loadArgArray();
         if ((methodAccess & Opcodes.ACC_STATIC) != 0) {
             super.visitInsn(ACONST_NULL);
         } else {
             super.loadThis();
         }
-        super.loadArgArray();
-        super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_ENTER, AGENT_HANDLER_ENTER_DESC, false);
+        super.visitLdcInsn(className);
+        super.visitLdcInsn(methodName);
+        super.visitLdcInsn(methodDesc);
+        super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS,
+                              AGENT_HANDLER_ENTER, AGENT_HANDLER_ENTER_DESC, false);
     }
 
     @Override
@@ -62,7 +64,14 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
         int th = newLocal(thType);
         storeLocal(th);
         loadLocal(th);
-        super.visitLdcInsn(exitFlag);
+        if ((methodAccess & Opcodes.ACC_STATIC) != 0) {
+            super.visitInsn(ACONST_NULL);
+        } else {
+            super.loadThis();
+        }
+        super.visitLdcInsn(className);
+        super.visitLdcInsn(methodName);
+        super.visitLdcInsn(methodDesc);
         super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_FAIL, AGENT_HANDLER_FAIL_DESC, false);
     }
 
@@ -79,7 +88,14 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
             }
             super.box(Type.getReturnType(this.methodDesc));
         }
-        super.visitLdcInsn(exitFlag);
+        if ((methodAccess & Opcodes.ACC_STATIC) != 0) {
+            super.visitInsn(ACONST_NULL);
+        } else {
+            super.loadThis();
+        }
+        super.visitLdcInsn(className);
+        super.visitLdcInsn(methodName);
+        super.visitLdcInsn(methodDesc);
         super.visitMethodInsn(Opcodes.INVOKESTATIC, AGENT_HANDLER_CLASS, AGENT_HANDLER_EXIT, AGENT_HANDLER_EXIT_DESC, false);
     }
 
@@ -90,17 +106,9 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     }
 
     @Override
-    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (desc.contains(Commons.AGENT_TRANSFORMED_METHOD)){
-            hasTransformedMethod = true;
-        }
-        return super.visitAnnotation(desc,visible);
-    }
-
-    @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         if (className.equals(owner) && methodName.equals(name) && methodDesc.equals(desc)){
-            exitFlag = 2;
+            isRecursiveMethod = true;
         }
         CodeInserter inserter = null;
         try {
@@ -140,9 +148,11 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     @Override
     public void visitEnd() {
         super.visitEnd();
-        if (!hasTransformedMethod){
-            super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
-            Agent.logger.info("TransformedMethod:"+methodName+methodDesc);
+        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+        if (isRecursiveMethod){
+            MethodTagStore.add(className,methodName,methodDesc, MethodTag.RECURSIVE);
         }
+        Agent.logger.info(
+            " Method:" + methodName + methodDesc + " has been Transformed. --isRecursiveMethod:" + isRecursiveMethod);
     }
 }
