@@ -17,10 +17,10 @@ public class AgentHandler {
         StringBuilder sb = new StringBuilder()
             .append("==> enter -- ").append(className)
             .append("#").append(methodName)
-            .append(":").append(thisObj==null?null:thisObj.toString())
-            .append("--isRecursiveMethod:")
-            .append(
-                MethodTagStore.isTagExist(className, methodName, methodDesc, MethodTag.RECURSIVE));
+            .append(":").append(thisObj==null?null:thisObj.hashCode());
+//            .append("--isRecursiveMethod:")
+//            .append(
+//                MethodTagStore.isTagExist(className, methodName, methodDesc, MethodTag.RECURSIVE));
         Agent.logger.info(sb.toString());
         if (args!=null){
             for (int i=0;i<args.length;i++){
@@ -30,17 +30,17 @@ public class AgentHandler {
     }
     public static void onFail(Throwable throwable, Object thisObj, String className, String methodName, String methodDesc){
         StringBuilder sb = new StringBuilder()
-            .append("==> fail -- ").append(className)
+            .append("<== fail -- ").append(className)
             .append("#").append(methodName)
-            .append(":").append(thisObj==null?null:thisObj.toString());
+            .append(":").append(thisObj==null?null:thisObj.hashCode());
         Agent.logger.info(sb.toString());
         Agent.logger.info("        throw "+throwable);
     }
     public static void onExit(Object returnValue, Object thisObj, String className, String methodName, String methodDesc){
         StringBuilder sb = new StringBuilder()
-            .append("==> exit -- ").append(className)
+            .append("<== exit -- ").append(className)
             .append("#").append(methodName)
-            .append(":").append(thisObj==null?null:thisObj.toString());
+            .append(":").append(thisObj==null?null:thisObj.hashCode());
         Agent.logger.info(sb.toString());
         Agent.logger.info("        return "+returnValue);
     }
