@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.config;
 
 import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.transform.pattern.MethodPattern;
 import org.onelab.monitor.agent.transform.pattern.TypePattern;
 
@@ -39,6 +40,7 @@ public class AgentConfig {
 
     private void initConfig() throws Throwable{
         initJarHome();
+        AgentLogger.initialize(jarHome + "log");
         Agent.logger.info("agent_config_path:"+jarHome+agent_config_path);
         this.config = Config.init(jarHome+agent_config_path);
         Agent.logger.info(
