@@ -83,7 +83,7 @@ public class MethodPattern {
     }
     //默认包含所有
     public boolean matchExclude(String owner,String name,String desc){
-        if (excludepattern == null || includepattern.isEmpty()) return true;
+        if (excludepattern == null || excludepattern.isEmpty()) return true;
         for (MethodDescPattern methodDescPattern:excludepattern){
             if (methodDescPattern.match(owner,name,desc))
                 return false;
