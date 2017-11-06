@@ -2,30 +2,34 @@
 <config>
     <log level="info" console="true"/>
     <type>
+        <!--包含的类名, 必须填写-->
         <includepatterns>
-            <!--<includepattern>com/ass/.*</includepattern>-->
+            <includepattern>test/org/onelab/monitor/agent/Test_1</includepattern>
         </includepatterns>
+        <!--在包含的类名排除类名, 可以不写-->
         <excludepatterns>
-            <!--<excludepattern>net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*</excludepattern>-->
+            <excludepattern>^(net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*)$</excludepattern>
         </excludepatterns>
-        <forceincludepatterns>
-            <!--<forceincludepattern>org/ass/.*</forceincludepattern>-->
-        </forceincludepatterns>
     </type>
     <method>
         <includepatterns>
-            <!--<includepattern>-->
-                <!--<owner>.*</owner>-->
-                <!--<name>.*</name>-->
-                <!--<desc>.*</desc>-->
-            <!--</includepattern>-->
+            <includepattern>
+                <owner>.*</owner>
+                <name>.*</name>
+                <desc>.*</desc>
+            </includepattern>
         </includepatterns>
         <excludepatterns>
-            <!--<excludepattern>-->
-                <!--<owner>.*</owner>-->
-                <!--<name>set.*</name>-->
-                <!--<desc>.*</desc>-->
-            <!--</excludepattern>-->
+            <excludepattern>
+                <owner>test/org/onelab/monitor/agent/Test_1</owner>
+                <name>^test3$</name>
+                <desc>\(Ljava/lang/String;Z\)I</desc>
+            </excludepattern>
+            <excludepattern>
+                <owner>test/org/onelab/monitor/agent/Test_1</owner>
+                <name>^test2$</name>
+                <desc>\(\)V</desc>
+            </excludepattern>
         </excludepatterns>
     </method>
     <codeinserterbuilders>

@@ -18,8 +18,6 @@ public class Config {
     public static final String LOG_CONSOLE = "console";
 
     public static final String TYPE = "type";
-    public static final String TYPE_FORCEINCLUDEPATTERNS = "forceincludepatterns";
-    public static final String TYPE_FORCEINCLUDEPATTERN = "forceincludepattern";
 
     public static final String METHOD = "method";
     public static final String METHOD_OWNER = "owner";
@@ -55,7 +53,6 @@ public class Config {
 
     public Set<String> typeIncludepatterns = new HashSet<String>();
     public Set<String> typeExcludepatterns = new HashSet<String>();
-    public Set<String> typeForceincludepatterns = new HashSet<String>();
 
     public Set<MethodDesc> methodIncludepatterns = new HashSet<MethodDesc>();
     public Set<MethodDesc> methodExcludepatterns = new HashSet<MethodDesc>();
@@ -89,43 +86,34 @@ public class Config {
                     config.typeExcludepatterns.add(iterm.value);
                 }
             }
-            Node typeForceInclude = NodeSelector.selectNode(typeNode,TYPE_FORCEINCLUDEPATTERNS,0);
-            subs = NodeSelector.selectNodes(typeForceInclude,TYPE_FORCEINCLUDEPATTERN);
-            if (subs!=null){
-                for (Node iterm:subs){
-                    config.typeForceincludepatterns.add(iterm.value);
-                }
-            }
         }
         Node methodNode = NodeSelector.selectNode(node,METHOD,0);
         if (methodNode!=null){
-            if (methodNode.attributes!=null){
-                Node methodInclude = NodeSelector.selectNode(methodNode,INCLUDEPATTERNS,0);
-                List<Node> subs = NodeSelector.selectNodes(methodInclude,INCLUDEPATTERN);
-                if (subs!=null){
-                    for (Node iterm:subs){
-                        Node ownerNode = NodeSelector.selectNode(iterm,METHOD_OWNER,0);
-                        Node nameNode = NodeSelector.selectNode(iterm,METHOD_NAME,0);
-                        Node descNode = NodeSelector.selectNode(iterm,METHOD_DESC,0);
-                        if (ownerNode!=null && nameNode!=null && descNode!=null){
-                            config.methodIncludepatterns.add(
-                                    new MethodDesc(ownerNode.value,nameNode.value,descNode.value)
-                            );
-                        }
+            Node methodInclude = NodeSelector.selectNode(methodNode,INCLUDEPATTERNS,0);
+            List<Node> subs = NodeSelector.selectNodes(methodInclude,INCLUDEPATTERN);
+            if (subs!=null){
+                for (Node iterm:subs){
+                    Node ownerNode = NodeSelector.selectNode(iterm,METHOD_OWNER,0);
+                    Node nameNode = NodeSelector.selectNode(iterm,METHOD_NAME,0);
+                    Node descNode = NodeSelector.selectNode(iterm,METHOD_DESC,0);
+                    if (ownerNode!=null && nameNode!=null && descNode!=null){
+                        config.methodIncludepatterns.add(
+                            new MethodDesc(ownerNode.value,nameNode.value,descNode.value)
+                        );
                     }
                 }
-                Node methodExclude = NodeSelector.selectNode(methodNode,EXCLUDEPATTERNS,0);
-                subs = NodeSelector.selectNodes(methodExclude,EXCLUDEPATTERN);
-                if (subs!=null){
-                    for (Node iterm:subs){
-                        Node ownerNode = NodeSelector.selectNode(iterm,METHOD_OWNER,0);
-                        Node nameNode = NodeSelector.selectNode(iterm,METHOD_NAME,0);
-                        Node descNode = NodeSelector.selectNode(iterm,METHOD_DESC,0);
-                        if (ownerNode!=null && nameNode!=null && descNode!=null){
-                            config.methodExcludepatterns.add(
-                                    new MethodDesc(ownerNode.value,nameNode.value,descNode.value)
-                            );
-                        }
+            }
+            Node methodExclude = NodeSelector.selectNode(methodNode,EXCLUDEPATTERNS,0);
+            subs = NodeSelector.selectNodes(methodExclude,EXCLUDEPATTERN);
+            if (subs!=null){
+                for (Node iterm:subs){
+                    Node ownerNode = NodeSelector.selectNode(iterm,METHOD_OWNER,0);
+                    Node nameNode = NodeSelector.selectNode(iterm,METHOD_NAME,0);
+                    Node descNode = NodeSelector.selectNode(iterm,METHOD_DESC,0);
+                    if (ownerNode!=null && nameNode!=null && descNode!=null){
+                        config.methodExcludepatterns.add(
+                            new MethodDesc(ownerNode.value,nameNode.value,descNode.value)
+                        );
                     }
                 }
             }

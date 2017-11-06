@@ -15,8 +15,8 @@ public class AgentConfig {
 
     private Config config;
     private String jarHome;
-    private String agent_config_path = Commons.AGENT_CONFIG_PATH;
-    private String agent_home_file = Commons.AGENT_HOME_FILE;
+    private String agent_config_path = Const.AGENT_CONFIG_PATH;
+    private String agent_home_file = Const.AGENT_HOME_FILE;
 
     private TypePattern typePattern;
     private MethodPattern methodPattern;
@@ -30,8 +30,7 @@ public class AgentConfig {
     private void initAgentConfig(){
         typePattern = new TypePattern(
             config.typeIncludepatterns,
-            config.typeExcludepatterns,
-            config.typeForceincludepatterns);
+            config.typeExcludepatterns);
         methodPattern = new MethodPattern(
             config.methodIncludepatterns,
             config.methodExcludepatterns);
@@ -51,7 +50,6 @@ public class AgentConfig {
                 new StringBuilder("config-type: ")
                         .append("{includepatterns:").append(config.typeIncludepatterns)
                         .append(",excludepatterns:").append(config.typeExcludepatterns)
-                        .append(",forceincludepatterns:").append(config.typeForceincludepatterns)
                         .append("}").toString()
         );
         Agent.logger.info(
@@ -86,8 +84,5 @@ public class AgentConfig {
 
     public MethodPattern getMethodPattern() {
         return methodPattern;
-    }
-
-    public static void main(String[] args){
     }
 }

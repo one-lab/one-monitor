@@ -3,7 +3,6 @@ package org.onelab.monitor.agent.transform.asm;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.JSRInlinerAdapter;
 import org.onelab.monitor.agent.Agent;
-import org.onelab.monitor.agent.transform.TransformedClass;
 import org.onelab.monitor.agent.transform.matcher.MethodMatcher;
 
 /**
@@ -16,7 +15,7 @@ public class AgentClassAdapter extends ClassVisitor {
     public AgentClassAdapter(ClassVisitor cv, String className) {
         super(Opcodes.ASM4, cv);
         this.className = className;
-        Agent.logger.info("type : "+className+" is being transformed...");
+//        Agent.logger.info("type : "+className+" is being transformed...");
     }
 
     @Override
@@ -39,7 +38,7 @@ public class AgentClassAdapter extends ClassVisitor {
     public void visitEnd() {
         super.visitEnd();
         // 给被处理的类加标记
-        super.visitAnnotation(Type.getDescriptor(TransformedClass.class), true);
+//        super.visitAnnotation(Type.getDescriptor(TransformedClass.class), true);
         Agent.logger.info("type : " + className + " be transformed success.");
     }
 }

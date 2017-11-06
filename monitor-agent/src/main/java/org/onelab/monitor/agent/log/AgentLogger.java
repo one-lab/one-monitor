@@ -1,7 +1,8 @@
 package org.onelab.monitor.agent.log;
 
 import java.io.File;
-import java.util.logging.ConsoleHandler;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +17,9 @@ public class AgentLogger {
     private static FileHandler fh;
 
     public void info(String msg){
-//        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-//        System.out.println("[" + time + "] [AGL] INFO : "+msg);
-        logger.info(msg);
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+        System.out.println("[" + time + "] [AGL] INFO : "+msg);
+//        logger.info(msg);
     }
     public void warn(String msg){
 //        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());

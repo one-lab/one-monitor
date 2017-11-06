@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.ClassWriter;
-import org.onelab.monitor.agent.config.Commons;
+import org.onelab.monitor.agent.config.Const;
 
 /**
  * monitor-agent类写入器
@@ -39,7 +39,7 @@ public class AgentClassWriter extends ClassWriter {
             return type2;
         }
         if (c.isInterface() || d.isInterface()) {
-            return Commons.JAVA_OBJECT_TYPE;
+            return Const.JAVA_OBJECT_TYPE;
         } else {
             do {
                 c = c.getSuperclass();

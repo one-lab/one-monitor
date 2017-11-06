@@ -22,11 +22,12 @@ public class AgentClassReader extends ClassReader {
         // 如果是接口则不予处理
         if ((access & Opcodes.ACC_INTERFACE) != 0) return false;
         // 如果是枚举则不予处理
-        else if ((access & Opcodes.ACC_ENUM) != 0) return false;
+        if ((access & Opcodes.ACC_ENUM) != 0) return false;
         // 如果是注解则不予处理
-        else if ((access & Opcodes.ACC_ANNOTATION) != 0) return false;
-        // 如果是私有类则不予处理
-        else if ((access & Opcodes.ACC_PRIVATE) !=0) return false;
-        else return true;
+        if ((access & Opcodes.ACC_ANNOTATION) != 0) return false;
+//        // 如果是私有类则不予处理
+//        if ((access & Opcodes.ACC_PRIVATE) !=0) return false;
+        
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
+.DS_Store
 target
 one-monitor.iml
 monitor-agent.iml
