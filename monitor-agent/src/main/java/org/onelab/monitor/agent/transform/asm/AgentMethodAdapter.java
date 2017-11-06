@@ -3,10 +3,10 @@ package org.onelab.monitor.agent.transform.asm;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 import org.onelab.monitor.agent.Agent;
-import org.onelab.monitor.agent.config.Commons;
+import org.onelab.monitor.agent.config.Const;
 import org.onelab.monitor.agent.store.MethodTag;
 import org.onelab.monitor.agent.store.MethodTagStore;
-import org.onelab.monitor.agent.transform.TransformedMethod;
+//import org.onelab.monitor.agent.transform.TransformedMethod;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserter;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserterPool;
 
@@ -14,7 +14,7 @@ import org.onelab.monitor.agent.transform.asm.inserter.CodeInserterPool;
  * monitor-agent方法适配器
  * Created by chunliangh on 14-11-14.
  */
-public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Commons {
+public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const {
 
     private String className;
     private String methodName;
@@ -30,7 +30,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     public AgentMethodAdapter(String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
-        Agent.logger.info(" Method:"+methodName+methodDesc+" is being transformed...");
+//        Agent.logger.info(" Method:"+methodName+methodDesc+" is being transformed...");
         this.className = className;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
@@ -148,7 +148,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Common
     @Override
     public void visitEnd() {
         super.visitEnd();
-        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+//        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
         String msg = " Method:" + methodName + methodDesc + " has been Transformed. ";
         if (isRecursiveMethod){
             MethodTagStore.add(className,methodName,methodDesc, MethodTag.RECURSIVE);

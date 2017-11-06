@@ -14,8 +14,9 @@ import java.util.regex.Pattern;
  */
 public class MethodPattern {
 
-    private Set<MethodDescPattern> includepattern;
-    private Set<MethodDescPattern> excludepattern;
+    private Set<MethodDescPattern> includepattern = new HashSet<MethodDescPattern>();
+    private Set<MethodDescPattern> excludepattern = new HashSet<MethodDescPattern>();
+
     private class MethodDescPattern{
         Pattern owner;
         Pattern name;
@@ -44,9 +45,6 @@ public class MethodPattern {
                     MethodDescPattern methodDescPattern = new MethodDescPattern(
                             Pattern.compile(desc.owner),Pattern.compile(desc.name),Pattern.compile(desc.desc)
                     );
-                    if (includepattern == null){
-                        includepattern = new HashSet<MethodDescPattern>();
-                    }
                     includepattern.add(methodDescPattern);
                 }
             }
@@ -59,9 +57,6 @@ public class MethodPattern {
                     MethodDescPattern methodDescPattern = new MethodDescPattern(
                             Pattern.compile(desc.owner),Pattern.compile(desc.name),Pattern.compile(desc.desc)
                     );
-                    if (excludepattern == null){
-                        excludepattern = new HashSet<MethodDescPattern>();
-                    }
                     excludepattern.add(methodDescPattern);
                 }
             }
@@ -74,8 +69,7 @@ public class MethodPattern {
 
     //默认包含所有
     public boolean matchInclude(String owner,String name,String desc){
-        if (includepattern == null || includepattern.isEmpty()) return true;
-        for (MethodDescPattern methodDescPattern:includepattern){
+        for (MethodDescPattern methodDescPattern : includepattern){
             if (methodDescPattern.match(owner,name,desc))
                 return true;
         }
@@ -83,11 +77,10 @@ public class MethodPattern {
     }
     //默认包含所有
     public boolean matchExclude(String owner,String name,String desc){
-        if (excludepattern == null || excludepattern.isEmpty()) return true;
-        for (MethodDescPattern methodDescPattern:excludepattern){
+        for (MethodDescPattern methodDescPattern : excludepattern){
             if (methodDescPattern.match(owner,name,desc))
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 }

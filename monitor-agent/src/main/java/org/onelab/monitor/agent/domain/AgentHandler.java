@@ -1,11 +1,13 @@
 package org.onelab.monitor.agent.domain;
 
 import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.domain.track.Track;
+import org.onelab.monitor.agent.domain.track.TrackService;
+import org.onelab.monitor.agent.store.MethodTag;
+import org.onelab.monitor.agent.store.MethodTagStore;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 方法监听处理器
@@ -13,67 +15,80 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AgentHandler {
 
-    static ThreadLocal<String> trackId = new ThreadLocal();
-    static ThreadLocal<AtomicInteger> investCount = new ThreadLocal();
-    static ThreadLocal<Map<Integer,Long>> timeMap = new ThreadLocal<Map<Integer, Long>>();
+    static ThreadLocal<Integer> currIndex = new ThreadLocal();
+    static ThreadLocal<Stack<Track>> trackStackLocal = new ThreadLocal();
+    static TrackService trackService = new TrackService();
+
+    private static Track buildTrack(String trackId, int index, Object[] args, Object thisObj, String className, String methodName, String methodDesc){
+        Track track = new Track();
+        track.setIndex(index);
+        track.setTrackId(trackId);
+        track.setClassName(className);
+        track.setMethodName(methodName);
+        track.setMethodDesc(methodDesc);
+        track.setThisObj(thisObj);
+        track.setArgs(args);
+        track.setRecursive(MethodTagStore.isTagExist(className, methodName, methodDesc, MethodTag.RECURSIVE));
+        track.setSTime(System.currentTimeMillis());
+        return track;
+    }
 
     public static void onEnter(Object[] args, Object thisObj, String className, String methodName, String methodDesc){
-        if (investCount.get() == null){
-            investCount.set(new AtomicInteger(0));
+        Integer index = currIndex.get();
+        if (index == null){
+            index = 0;
+            currIndex.set(index);
+            Stack<Track> trackStack = new Stack<Track>();
+            trackStackLocal.set(trackStack);
+            String trackId = UUID.randomUUID().toString();
+            trackStack.push(buildTrack(trackId, index, args, thisObj, className, methodName, methodDesc));
+        } else {
+            currIndex.set(++index);
+            Stack<Track> trackStack = trackStackLocal.get();
+            Track last = trackStack.peek();
+            //递归方法只记录一次
+            if (last.isRecursive()){
+                return;
+            }
+            String trackId = last.getTrackId();
+            trackStack.push(buildTrack(trackId, index, args, thisObj, className, methodName, methodDesc));
         }
-        int index = investCount.get().intValue();
+    }
+
+    public static void onExit(Object returnValue, Object thisObj,
+                              String className, String methodName, String methodDesc){
+        exit(returnValue, null, false, className, methodName, methodDesc);
+    }
+
+    public static void onFail(Throwable throwable, Object thisObj,
+                              String className, String methodName, String methodDesc){
+        exit(null, throwable, true, className, methodName, methodDesc);
+    }
+
+    private static void exit(Object returnValue, Throwable throwable, boolean isFail,
+                             String className, String methodName, String methodDesc){
+        long eTime = System.currentTimeMillis();
+        Integer index = currIndex.get();
+        Stack<Track> trackStack = trackStackLocal.get();
+        Track last = trackStack.peek();
+        if (last.getIndex() > index){
+            Agent.logger.warn("AgentHandler.exit: last.getIndex()<index ! " + className + methodName + methodDesc);
+            return;
+        }
+        if (last.getIndex() < index){
+            currIndex.set(--index);
+            return;
+        }
+        last = trackStack.pop();
+        last.setETime(eTime);
+        last.setThrowable(throwable);
+        last.setReturnValue(returnValue);
         if (index == 0){
-            trackId.set(UUID.randomUUID().toString());
+            currIndex.remove();
+            trackStackLocal.remove();
         }
-        if(timeMap.get() == null){
-            timeMap.set(new HashMap<Integer, Long>());
-        }
-        timeMap.get().put(index,System.currentTimeMillis());
-        StringBuilder sb = new StringBuilder(trackId.get());
-        for (int i=0; i<index; i++){
-            sb.append(" >");
-        }
-        sb.append(" I -- ")
-            .append(className)
-            .append("#").append(methodName).append(methodDesc)
-            .append(" [").append(thisObj==null?null:thisObj.hashCode()).append("]");
-//            .append("--isRecursiveMethod:")
-//            .append(
-//                MethodTagStore.isTagExist(className, methodName, methodDesc, MethodTag.RECURSIVE));
-        investCount.get().incrementAndGet();
-//        if (args!=null){
-//            for (int i=0;i<args.length;i++){
-//                sb.append(" *args[").append(i).append("]=").append(args[i]!=null?args[i].toString():null);
-//            }
-//        }
-        Agent.logger.info(sb.toString());
-    }
-    public static void onFail(Throwable throwable, Object thisObj, String className, String methodName, String methodDesc){
-        investCount.get().decrementAndGet();
-        int index = investCount.get().intValue();
-        StringBuilder sb = new StringBuilder(trackId.get());
-        for (int i=0; i<index; i++){
-            sb.append(" >");
-        }
-        sb.append(" F -- ").append(className)
-            .append("#").append(methodName).append(methodDesc)
-            .append(" [").append(thisObj==null?null:thisObj.hashCode()).append("]");
-//            .append(" *throw ").append(throwable);
-        sb.append(" [").append(index).append(".cost:").append(System.currentTimeMillis()-timeMap.get().get(index)).append("ms]");
-        Agent.logger.info(sb.toString());
-    }
-    public static void onExit(Object returnValue, Object thisObj, String className, String methodName, String methodDesc){
-        investCount.get().decrementAndGet();
-        int index = investCount.get().intValue();
-        StringBuilder sb = new StringBuilder(trackId.get());
-        for (int i=0; i<index; i++){
-            sb.append(" >");
-        }
-        sb.append(" O -- ").append(className)
-            .append("#").append(methodName).append(methodDesc)
-            .append(" [").append(thisObj==null?null:thisObj.hashCode()).append("]");
-//            .append(" *return ").append(returnValue);
-        sb.append(" [").append(index).append(".cost:").append(System.currentTimeMillis()-timeMap.get().get(index)).append("ms]");
-        Agent.logger.info(sb.toString());
+        currIndex.set(--index);
+        // 逻辑处理
+        trackService.execute(last, isFail);
     }
 }
