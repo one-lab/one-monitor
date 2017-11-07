@@ -7,7 +7,7 @@ import org.onelab.monitor.agent.Agent;
  */
 public class TrackService {
 
-  public void execute(Track last, boolean isFail) {
-    Agent.logger.info(last.toString());
+  public void execute(Track track, boolean isFail) {
+    Agent.logger.info(track.toString() + " FAIL:" + isFail);
   }
 }

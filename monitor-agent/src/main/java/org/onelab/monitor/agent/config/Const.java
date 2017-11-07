@@ -20,7 +20,16 @@ public interface Const {
     // 配置文件
     String AGENT_CONFIG_PATH = "agent-config.xml";
     // 非法方法
-    String ILLEGAL_METHOD_PATTERN = "^(<(cl)?init>|finalize|wait)$";
+    String ILLEGAL_METHOD_PATTERN = "^(<(cl)?init>"
+                                    + "|finalize"
+                                    + "|clone"
+                                    + "|wait"
+                                    + "|notify"
+                                    + "|notifyAll"
+                                    + "|hashCode"
+                                    + "|equals"
+                                    + "|toString"
+                                    + "|getClass)$";
     // 非法包名
     String ILLEGAL_CLASS_PATTERN =
         "^(java/.*"

@@ -17,6 +17,7 @@ public class Track {
   private long STime;
   private long ETime;
   boolean recursive;
+  private Track parent;
 
   public void setTrackId(String trackId) {
     this.trackId = trackId;
@@ -112,6 +113,14 @@ public class Track {
 
   public void setRecursive(boolean recursive) {
     this.recursive = recursive;
+  }
+
+  public Track getParent() {
+    return parent;
+  }
+
+  public void setParent(Track parent) {
+    this.parent = parent;
   }
 
   public boolean equals(String className, String methodName, String methodDesc, Object thisObj) {
