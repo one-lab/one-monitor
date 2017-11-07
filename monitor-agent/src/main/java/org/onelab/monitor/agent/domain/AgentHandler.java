@@ -46,7 +46,7 @@ public class AgentHandler {
             currIndex.set(++index);
             Stack<Track> trackStack = trackStackLocal.get();
             Track last = trackStack.peek();
-            //递归方法只记录一次
+            //递归方法只记录一次,内部调用将不予处理
             if (last.isRecursive()){
                 return;
             }
