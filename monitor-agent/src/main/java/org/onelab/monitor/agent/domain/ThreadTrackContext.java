@@ -1,8 +1,7 @@
 package org.onelab.monitor.agent.domain;
 
 import org.onelab.monitor.agent.domain.track.Track;
-
-import java.util.UUID;
+import org.onelab.monitor.agent.utils.UUIDGenerator;
 
 /**
  * @author Chunliang.Han on 2017/11/7.
@@ -35,7 +34,7 @@ public class ThreadTrackContext {
   public void push(Track track) {
     String tid ;
     if (trackSize == 0){
-      tid = UUID.randomUUID().toString();
+      tid = UUIDGenerator.randomUUID();
     } else {
       Track t = head;
       tid = t.getTrackId();

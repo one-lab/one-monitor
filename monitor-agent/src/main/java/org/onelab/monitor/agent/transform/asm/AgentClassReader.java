@@ -2,6 +2,7 @@ package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
+import org.onelab.monitor.agent.transform.matcher.TypeMatcher;
 
 /**
  * monitor-agent类载入器
@@ -25,9 +26,25 @@ public class AgentClassReader extends ClassReader {
         if ((access & Opcodes.ACC_ENUM) != 0) return false;
         // 如果是注解则不予处理
         if ((access & Opcodes.ACC_ANNOTATION) != 0) return false;
-//        // 如果是私有类则不予处理
-//        if ((access & Opcodes.ACC_PRIVATE) !=0) return false;
-        
-        return true;
+
+        return matchType() || matchInterface();
+    }
+
+    private boolean matchType(){
+        if (TypeMatcher.match(getClassName())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean matchInterface(){
+        // 接口的实现类予以通过
+        String[] interfaces = getInterfaces();
+        if (interfaces != null){
+            for (String inf : interfaces){
+                if (TypeMatcher.match(inf)) return true;
+            }
+        }
+        return false;
     }
 }

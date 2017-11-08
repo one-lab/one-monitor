@@ -131,11 +131,11 @@ public class Track {
 
   public String toString(){
     return new StringBuilder()
-        .append("[").append(trackId).append("] [").append(index)
-        .append("] [cost:").append(ETime-STime).append("ms] ")
+        .append("[").append(trackId).append("] ").append(index).append("\t")
+        .append(ETime-STime).append("\t")
         .append(className).append("#").append(methodName).append(methodDesc)
-        .append(" [").append(thisObj == null ? "STATIC" : thisObj.hashCode()).append("] ")
-        .append(isRecursive() ? "RECURSIVE" : "")
+        .append(thisObj == null ? " STATIC" : thisObj.hashCode())
+        .append(isRecursive() ? " RECURSIVE" : "")
         .toString();
   }
 }

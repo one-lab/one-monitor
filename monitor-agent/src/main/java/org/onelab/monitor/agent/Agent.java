@@ -4,7 +4,6 @@ import org.onelab.monitor.agent.config.AgentConfig;
 import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.transform.AgentTransformer;
 import org.onelab.monitor.agent.transform.asm.AgentUtil;
-import org.onelab.monitor.agent.transport.Consumer;
 
 import java.lang.instrument.Instrumentation;
 
@@ -30,9 +29,6 @@ public class Agent {
     }
     private static void start() throws Throwable{
         config.init();
-        logger.info("AgentConfig init success...");
-        Consumer.start();
-        logger.info("Consumer start success...");
         instrumentation.addTransformer(agentTransformer);
         logger.info("AgentTransformer has bean registered...");
         setupShutdownHooks();
