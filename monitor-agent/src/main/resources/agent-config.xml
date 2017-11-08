@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <log level="info" console="true"/>
+    <log level="info" console="false"/>
     <type>
         <!--包含的类名, 必须填写-->
         <includepatterns>
-            <includepattern>test/org/onelab/monitor/agent/Test_1</includepattern>
+            <includepattern>test/org/onelab/monitor/agent/Bss</includepattern>
         </includepatterns>
         <!--在包含的类名排除类名, 可以不写-->
         <excludepatterns>
@@ -20,16 +20,16 @@
             </includepattern>
         </includepatterns>
         <excludepatterns>
-            <excludepattern>
-                <owner>test/org/onelab/monitor/agent/Test_1</owner>
-                <name>^test3$</name>
-                <desc>\(Ljava/lang/String;Z\)I</desc>
-            </excludepattern>
-            <excludepattern>
-                <owner>test/org/onelab/monitor/agent/Test_1</owner>
-                <name>^test2$</name>
-                <desc>\(\)V</desc>
-            </excludepattern>
+            <!--<excludepattern>-->
+                <!--<owner>test/org/onelab/monitor/agent/Test_1</owner>-->
+                <!--<name>^test3$</name>-->
+                <!--<desc>\(Ljava/lang/String;Z\)I</desc>-->
+            <!--</excludepattern>-->
+            <!--<excludepattern>-->
+                <!--<owner>test/org/onelab/monitor/agent/Test_1</owner>-->
+                <!--<name>^test2$</name>-->
+                <!--<desc>\(\)V</desc>-->
+            <!--</excludepattern>-->
         </excludepatterns>
     </method>
     <codeinserterbuilders>

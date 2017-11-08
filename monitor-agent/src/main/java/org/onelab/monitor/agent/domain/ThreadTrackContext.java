@@ -13,6 +13,8 @@ public class ThreadTrackContext {
   //当前trackStack大小
   private int trackSize = 0;
 
+  private String traceId = UUIDGenerator.randomUUID();
+
   private Track head ;
 
   public int getCurrDeeps() {
@@ -31,49 +33,46 @@ public class ThreadTrackContext {
     this.trackSize = trackSize;
   }
 
-  public void push(Track track) {
-    String tid ;
-    if (trackSize == 0){
-      tid = UUIDGenerator.randomUUID();
-    } else {
-      Track t = head;
-      tid = t.getTrackId();
-      track.setParent(head);
+  /**
+   * 尝试pop, 并减少深度currDeeps
+   * @return
+   */
+  public Track pop() {
+    if (prePop()){
+      Track result = head;
+      trackSize--;
+      head = head.getParent();
+      return result;
     }
+    return null;
+  }
+
+  public void push(Track track) {
+    track.setParent(head);
     head = track;
     head.setIndex(trackSize++);
-    head.setTrackId(tid);
+    head.setTrackId(traceId);
+  }
+
+  public Track peek() {
+    return head;
   }
 
   /**
    * 增加深度currDeeps , 测试是否可以push
    * @return
    */
-  public boolean incrementCurrDeepsAndTestPush() {
+  public boolean prePush() {
     currDeeps++;
-    if (currDeeps>200){
-      return false;
-    }
-    if (trackSize > 0){
-      if (head.isRecursive()){
-        return false;
-      }
-    }
+    if (currDeeps > 200) return false;
+    if (head!=null && head.isRecursive()) return false;
     return true;
   }
 
-  /**
-   * 尝试pop, 并减少深度currDeeps
-   * @return
-   */
-  public Track testPop() {
-    currDeeps--;
-    if (trackSize > currDeeps){
-      trackSize--;
-      Track result = head;
-      head = head.getParent();
-      return result;
+  private boolean prePop(){
+    if (trackSize > --currDeeps){
+      return true;
     }
-    return null;
+    return false;
   }
 }

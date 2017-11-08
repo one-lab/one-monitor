@@ -3,9 +3,17 @@ package test.org.onelab.monitor.agent;
 /**
  * Created by chunliangh on 14-11-18.
  */
-public class Test_1 {
-    public static void main(String[] args) {
+public class Test_1 implements Ass, Bss {
 
+    public static void main(String[] args) {
+        Test_1 test_1 = new Test_1();
+        test_1.test2();
+        test_1.test6(7);
+        try {
+            test_1.test4();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int test1(byte by, short sh, char ch, int in, long lo, float fl, double dou,
@@ -105,6 +113,12 @@ public class Test_1 {
 //            Object b = a;
         }finally {
 //            new String();
+        }
+    }
+
+    public void test6(int i){
+        if (i>0){
+            test6(i-1);
         }
     }
 }

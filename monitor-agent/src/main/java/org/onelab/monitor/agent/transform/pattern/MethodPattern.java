@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.transform.pattern;
 
-import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Config;
+import org.onelab.monitor.agent.log.AgentLogger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +23,8 @@ public class MethodPattern {
         Pattern desc;
         MethodDescPattern(Pattern owner,Pattern name,Pattern desc){
             if (owner==null || name==null || desc==null){
-                Agent.logger.error("init MethodPattern error!owner==null || name==null || desc==null");
+                AgentLogger.sys
+                    .severe("init MethodPattern error!owner==null || name==null || desc==null");
                 throw new RuntimeException();
             }
             this.owner = owner;

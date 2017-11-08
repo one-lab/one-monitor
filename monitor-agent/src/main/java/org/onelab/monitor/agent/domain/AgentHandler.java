@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.domain;
 
 import org.onelab.monitor.agent.domain.track.Track;
-import org.onelab.monitor.agent.domain.track.TrackService;
+import org.onelab.monitor.agent.domain.track.TrackListener;
 import org.onelab.monitor.agent.store.MethodTag;
 import org.onelab.monitor.agent.store.MethodTagStore;
 
@@ -11,7 +11,7 @@ import org.onelab.monitor.agent.store.MethodTagStore;
  */
 public class AgentHandler {
 
-    private static TrackService trackService = new TrackService();
+    private static TrackListener trackListener = new TrackListener();
     private static ThreadLocal<ThreadTrackContext> trackContextLocal = new ThreadLocal();
 
     private static Track buildTrack(Object[] args, Object thisObj, String className, String methodName, String methodDesc){
@@ -32,8 +32,9 @@ public class AgentHandler {
             trackContext = new ThreadTrackContext();
             trackContextLocal.set(trackContext);
         }
-        if (trackContext.incrementCurrDeepsAndTestPush()){
+        if (trackContext.prePush()){
             trackContext.push(buildTrack(args, thisObj, className, methodName, methodDesc));
+            trackListener.onCome(trackContext.peek());
         }
     }
 
@@ -51,12 +52,12 @@ public class AgentHandler {
                              String className, String methodName, String methodDesc){
         long eTime = System.currentTimeMillis();
         ThreadTrackContext trackContext = trackContextLocal.get();
-        Track t = trackContext.testPop();
+        Track t = trackContext.pop();
         if (t != null){
             t.setETime(eTime);
             t.setReturnValue(returnValue);
             t.setThrowable(throwable);
-            trackService.execute(t, isFail);
+            trackListener.onQuit(t, isFail);
         }
     }
 }

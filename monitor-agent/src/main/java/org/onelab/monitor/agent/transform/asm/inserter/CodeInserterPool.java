@@ -1,6 +1,7 @@
 package org.onelab.monitor.agent.transform.asm.inserter;
 
 import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.transform.asm.inserter.builder.CodeInserterBuilder;
 
 import java.util.*;
@@ -44,7 +45,7 @@ public class CodeInserterPool {
         }
         if (insertCount>1){
             String info = "there are "+insertCount+" CodeInserters in same codeInsertPoint which required one!";
-            Agent.logger.error(info);
+            AgentLogger.sys.severe(info);
             return null;
         }
         return inserter;
@@ -58,9 +59,9 @@ public class CodeInserterPool {
                     Class<CodeInserterBuilder> clazz = (Class<CodeInserterBuilder>) Class.forName(builder);
                     CodeInserterBuilder codeInserterBuilder = clazz.newInstance();
                     CodeInserterPool.addCodeInserter(codeInserterBuilder.build());
-                    Agent.logger.info("CodeInserterBuilder ["+builder+"] init success!");
+                    AgentLogger.sys.info("CodeInserterBuilder [" + builder + "] init success!");
                 } catch (Exception e) {
-                    Agent.logger.error("CodeInserterBuilder init error!",e);
+                    AgentLogger.sys.severe("CodeInserterBuilder init error!");
                     throw new RuntimeException(e);
                 }
             }

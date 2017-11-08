@@ -667,12 +667,12 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
         /**
          * Returns the "owner" of a particular instruction relative to this
          * instantiation: the owner referes to the Instantiation which will emit
-         * the version of this instruction that we will execute.
+         * the version of this instruction that we will onQuit.
          * 
          * Typically, the return value is either <code>this</code> or
          * <code>null</code>. <code>this</code> indicates that this
          * instantiation will generate the version of this instruction that we
-         * will execute, and <code>null</code> indicates that this instantiation
+         * will onQuit, and <code>null</code> indicates that this instantiation
          * never executes the given instruction.
          * 
          * Sometimes, however, an instruction can belong to multiple

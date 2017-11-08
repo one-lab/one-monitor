@@ -48,8 +48,8 @@ public class Config {
         }
     }
 
-    public String logLevel = "info";
-    public boolean logConsole ;
+    public static String logLevel = "INFO";
+    public static boolean logConsole ;
 
     public Set<String> typeIncludepatterns = new HashSet<String>();
     public Set<String> typeExcludepatterns = new HashSet<String>();

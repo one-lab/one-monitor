@@ -2,11 +2,11 @@ package org.onelab.monitor.agent.transform.asm;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
-import org.onelab.monitor.agent.Agent;
 import org.onelab.monitor.agent.config.Const;
+import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.store.MethodTag;
 import org.onelab.monitor.agent.store.MethodTagStore;
-//import org.onelab.monitor.agent.transform.TransformedMethod;
+import org.onelab.monitor.agent.transform.TransformedMethod;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserter;
 import org.onelab.monitor.agent.transform.asm.inserter.CodeInserterPool;
 
@@ -30,7 +30,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const 
     public AgentMethodAdapter(String className, final MethodVisitor mv,
                               final int access, final String methodName, final String methodDesc) {
         super(ASM4, mv, access, methodName, methodDesc);
-//        Agent.logger.info(" Method:"+methodName+methodDesc+" is being transformed...");
+//        Agent.sys.info(" Method:"+methodName+methodDesc+" is being transformed...");
         this.className = className;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
@@ -119,7 +119,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const 
                     .append("target[").append(className).append("#").append(methodName+methodDesc).append("],")
                     .append("point[").append(owner).append("#").append(name+desc)
                     .append("#").append(inserter.getPointIndex()).append("]");
-            Agent.logger.warn(stringBuilder.toString());
+            AgentLogger.sys.warning(stringBuilder.toString());
         }
         if (inserter == null){
             super.visitMethodInsn(opcode, owner, name, desc, itf);
@@ -131,7 +131,7 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const 
                     .append(methodName+methodDesc).append("],")
                     .append("point[").append(owner).append("#")
                     .append(name+desc).append("#").append(inserter.getPointIndex()).append("]");
-            Agent.logger.info(stringBuilder.toString());
+            AgentLogger.sys.info(stringBuilder.toString());
         }
     }
 
@@ -148,12 +148,12 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const 
     @Override
     public void visitEnd() {
         super.visitEnd();
-//        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
-        String msg = " Method:" + methodName + methodDesc + " has been Transformed. ";
+        super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
+        String msg = "Transformed-M:" + methodName + methodDesc;
         if (isRecursiveMethod){
             MethodTagStore.add(className,methodName,methodDesc, MethodTag.RECURSIVE);
             msg = msg+"RECURSIVE";
         }
-        Agent.logger.info(msg);
+        AgentLogger.sys.info(msg);
     }
 }

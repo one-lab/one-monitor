@@ -3,7 +3,6 @@ package org.onelab.monitor.agent;
 import org.onelab.monitor.agent.config.AgentConfig;
 import org.onelab.monitor.agent.log.AgentLogger;
 import org.onelab.monitor.agent.transform.AgentTransformer;
-import org.onelab.monitor.agent.transform.asm.AgentUtil;
 
 import java.lang.instrument.Instrumentation;
 
@@ -12,7 +11,6 @@ import java.lang.instrument.Instrumentation;
  */
 public class Agent {
 
-    public static AgentLogger logger = new AgentLogger();
     public static AgentConfig config = new AgentConfig();
 
     private static AgentTransformer agentTransformer = new AgentTransformer();
@@ -22,32 +20,33 @@ public class Agent {
         instrumentation = inst;
         try {
             start();
-            logger.info("One-Monior-Agent start success!");
-        }catch (Throwable t){
-            logger.error("One-Monior-Agent start error!",t);
+            AgentLogger.sys.info("One-Monitor-Agent start success!");
+        } catch (Throwable t){
+                AgentLogger.sys.severe("One-Monitor-Agent start error!");
+            throw new RuntimeException(t);
         }
     }
+
     private static void start() throws Throwable{
         config.init();
         instrumentation.addTransformer(agentTransformer);
-        logger.info("AgentTransformer has bean registered...");
+        AgentLogger.sys.info("AgentTransformer has bean registered...");
         setupShutdownHooks();
-        logger.info("setupShutdownHooks success...");
+        AgentLogger.sys.info("setupShutdownHooks success...");
     }
+
     private static void stop(){
         instrumentation.removeTransformer(agentTransformer);
-        logger.info("One-Monior-Agent stop success!");
+        AgentLogger.sys.info("One-Monior-Agent stop success!");
     }
+
     private static void setupShutdownHooks() {
-        Thread thread = new Thread("OneMoniorAgent_Cleaner"){
+        Thread thread = new Thread("OneMonitorAgent_Cleaner"){
             public void run() {
                 Agent.stop();
             }
         };
         thread.setDaemon(false);
         Runtime.getRuntime().addShutdownHook(thread);
-    }
-    public static void main(String[] args){
-        System.out.println(AgentUtil.class);
     }
 }

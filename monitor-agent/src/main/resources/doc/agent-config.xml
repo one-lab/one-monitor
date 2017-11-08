@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <log level="info" console="true"/>
+    <log level="info" console="false"/>
     <type>
+        <!--包含的类名, 必须填写-->
         <includepatterns>
-            <!-- org/springframework/web/servlet/DispatcherServlet -->
+            <includepattern>com/(creditcloud|itiancai)/.*/.*Repository</includepattern>
         </includepatterns>
+        <!--在包含的类名排除类名, 可以不写-->
         <excludepatterns>
-            <!--<excludepattern>net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*</excludepattern>-->
-            <!--<excludepattern>scala/.*|com/twitter/.*|org/springframework/.*|org/activiti/.*|com/fasterxml/.*</excludepattern>-->
-            <excludepattern>.*</excludepattern>
+            <!--<excludepattern>^(net/.*|org/.*|com/intellij/.*|com/google/.*|com/thoughtworks/.*|ch/qos/.*|com/alibaba/.*)$</excludepattern>-->
         </excludepatterns>
     </type>
     <method>
-        <excludepatterns>
-            <excludepattern>
+        <includepatterns>
+            <includepattern>
                 <owner>.*</owner>
-                <name>hashCode.*|toString.*|equals.*|getClass.*|notify.*|wait.*|set.*|close.*|flush.*</name>
+                <name>(find|findOne|findAll|findBy|save).*</name>
                 <desc>.*</desc>
-            </excludepattern>
-        </excludepatterns>
+            </includepattern>
+            <includepattern>
+                <owner>com/(creditcloud|itiancai)/.*/.*Repository</owner>
+                <name>.*</name>
+                <desc>.*</desc>
+            </includepattern>
+        </includepatterns>
+        <!--<excludepatterns>-->
+            <!--<excludepattern>-->
+                <!--<owner>test/org/onelab/monitor/agent/Test_1</owner>-->
+                <!--<name>^test3$</name>-->
+                <!--<desc>\(Ljava/lang/String;Z\)I</desc>-->
+            <!--</excludepattern>-->
+            <!--<excludepattern>-->
+                <!--<owner>test/org/onelab/monitor/agent/Test_1</owner>-->
+                <!--<name>^test2$</name>-->
+                <!--<desc>\(\)V</desc>-->
+            <!--</excludepattern>-->
+        <!--</excludepatterns>-->
     </method>
     <codeinserterbuilders>
         <!--<codeinserterbuilder>org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder</codeinserterbuilder>-->

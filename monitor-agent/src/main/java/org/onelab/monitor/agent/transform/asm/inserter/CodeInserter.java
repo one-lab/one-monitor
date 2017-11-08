@@ -1,7 +1,7 @@
 package org.onelab.monitor.agent.transform.asm.inserter;
 
 import org.objectweb.asm.MethodVisitor;
-import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.log.AgentLogger;
 
 /**
  * 方法插入器，针对指定类的指定方法做切入，以某一方法的第n次调用标记切入点，
@@ -24,7 +24,7 @@ public abstract class CodeInserter {
 
     public CodeInserter(String targetType, String targetMethod, String targetMethodDesc,InsertPoint insertPoint) {
         if (targetType ==null || targetMethod ==null || targetMethodDesc ==null || insertPoint == null) {
-            Agent.logger.error("init CodeInserter error,all params must not null!");
+            AgentLogger.sys.severe("init CodeInserter error,all params must not null!");
             throw new IllegalArgumentException();
         }
         this.targetType = targetType;

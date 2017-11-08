@@ -130,8 +130,7 @@ public class Track {
   }
 
   public String toString(){
-    return new StringBuilder()
-        .append("[").append(trackId).append("] ").append(index).append("\t")
+    return new StringBuilder(trackId).append(":").append(index).append("\t")
         .append(ETime-STime).append("\t")
         .append(className).append("#").append(methodName).append(methodDesc)
         .append(thisObj == null ? " STATIC" : thisObj.hashCode())

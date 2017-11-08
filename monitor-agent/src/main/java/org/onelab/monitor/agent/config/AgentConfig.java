@@ -40,25 +40,25 @@ public class AgentConfig {
     private void initConfig() throws Throwable{
         initJarHome();
         AgentLogger.initialize(jarHome + "log");
-        Agent.logger.info("agent_config_path:"+jarHome+agent_config_path);
+        AgentLogger.sys.info("agent_config_path:" + jarHome + agent_config_path);
         this.config = Config.init(jarHome+agent_config_path);
-        Agent.logger.info(
+        AgentLogger.sys.info(
                 new StringBuilder("config-log:{level:").append(config.logLevel).append(",console:")
                         .append(config.logConsole).append("}").toString()
         );
-        Agent.logger.info(
+        AgentLogger.sys.info(
                 new StringBuilder("config-type: ")
                         .append("{includepatterns:").append(config.typeIncludepatterns)
                         .append(",excludepatterns:").append(config.typeExcludepatterns)
                         .append("}").toString()
         );
-        Agent.logger.info(
+        AgentLogger.sys.info(
                 new StringBuilder("config-method: ")
                         .append("{includepatterns:").append(config.methodIncludepatterns)
                         .append(",excludepatterns:").append(config.methodExcludepatterns)
                         .append("}").toString()
         );
-        Agent.logger.info(
+        AgentLogger.sys.info(
                 new StringBuilder("config-codeinserterbuilders: ")
                         .append(config.codeinserterbuilders).toString()
         );

@@ -1,6 +1,6 @@
 package org.onelab.monitor.agent.transform.asm.inserter;
 
-import org.onelab.monitor.agent.Agent;
+import org.onelab.monitor.agent.log.AgentLogger;
 
 /**
  * 代码切入点：methodInsn对应的位置
@@ -18,10 +18,10 @@ public class InsertPoint {
 
     public InsertPoint(String pointType, String pointMethod, String pointDesc, int pointIndex) {
         if(pointIndex<1 || pointType==null || pointMethod==null || pointDesc==null){
-            Agent.logger.error("InsertPoint init warning: " +
-                    "field[pointType,pointMethod,pointDesc,pointIndex] " +
-                    "values["+pointType+","+pointMethod+","+pointDesc+","+pointIndex+"] " +
-                    "cause by [pointIndex<1 || pointType==null || pointMethod==null || pointDesc==null]");
+            AgentLogger.sys.severe("InsertPoint init warning: " +
+                                   "field[pointType,pointMethod,pointDesc,pointIndex] " +
+                                   "values[" + pointType + "," + pointMethod + "," + pointDesc + "," + pointIndex + "] " +
+                                   "cause by [pointIndex<1 || pointType==null || pointMethod==null || pointDesc==null]");
             throw new RuntimeException();
         }
         this.pointType = pointType;

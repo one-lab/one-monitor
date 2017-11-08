@@ -1,8 +1,9 @@
 package org.onelab.monitor.agent.log;
 
+import org.onelab.monitor.agent.config.Config;
+
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,64 +14,50 @@ import java.util.logging.Logger;
  */
 public class AgentLogger {
 
-    private static Logger logger;
-    private static FileHandler fh;
+    public static Logger sys;
+    public static Logger cus;
 
-    public void info(String msg){
-        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-        System.out.println("[" + time + "] [AGL] INFO : "+msg);
-//        logger.info(msg);
-    }
-    public void warn(String msg){
-//        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-//        System.out.println("[" + time + "] [AGL] WARN : "+msg);
-        logger.warning(msg);
-    }
-    public void warn(String msg,Throwable throwable){
-//        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-//        System.out.println("[" + time + "] [AGL] WARN : "+msg);
-//        System.out.println(throwable);
-        logger.warning(msg);
-        logger.warning(throwable.toString());
-    }
-    public void error(String msg){
-//        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-//        System.out.println("[" + time + "] [AGL] ERROR : "+msg);
-        logger.severe(msg);
-    }
-    public void error(String msg,Throwable throwable){
-//        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-//        System.out.println("[" + time + "] [AGL] ERROR : "+msg);
-//        System.out.println(throwable);
-        logger.severe(msg);
-        logger.severe(throwable.toString());
-    }
+    public static final String filePreFix = "file:";
+    public static final String sysLogFile = "sys.log";
+    public static final String cusLogFile = "cus.log";
 
-    public static Logger initialize(String dir) {
-        if (dir.startsWith("file:")){
+    public static final int maxSize = 30*1024*1024;
+    public static final int maxFileCount = 500;
+
+    public static void initialize(String dir) throws IOException {
+
+        if (dir.startsWith(filePreFix)){
             dir = dir.substring(5);
         }
-        logger = Logger.getLogger("AGL");
-        logger.setUseParentHandlers(false);
+
         File agentDir = new File(dir);
         if (!agentDir.isDirectory()){
             agentDir.mkdir();
         }
-        String fileName = "agent.log";
-        File logFile = new File(agentDir, fileName);
-        try {
-            int limit = 5 * 1024 * 1024;
-            int count = 10;
-            fh = new FileHandler(logFile.getPath(), limit, count, false);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        sys = getLogger("SYS", agentDir, sysLogFile);
+        cus = getLogger("CUS", agentDir, cusLogFile);
+    }
+
+    private static Logger getLogger(String name, File dir, String fileName) throws IOException {
+        Logger logger = Logger.getLogger(name);
+        logger.setUseParentHandlers(false);
+        Level level = Level.INFO;
+        String logLevel = Config.logLevel;
+        if (logLevel != null && logLevel.length()==0){
+            level = Level.parse(logLevel);
         }
-        fh.setFormatter(new LogFormatter());
-//        ConsoleHandler consoleHandler = new ConsoleHandler();
-//        consoleHandler.setFormatter(new LogFormatter());
-        logger.addHandler(fh);
-//        logger.addHandler(consoleHandler);
-        logger.setLevel(Level.ALL);
+        logger.addHandler(getFileHandler(dir, fileName, level));
+        logger.setLevel(level);
         return logger;
+    }
+
+    private static FileHandler getFileHandler(File dir, String fileName, Level level)
+        throws IOException {
+        File logFile = new File(dir, fileName);
+        FileHandler handler = new FileHandler(logFile.getPath(), maxSize, maxFileCount, true);
+        handler.setLevel(level);
+        handler.setFormatter(new LogFormatter());
+        return handler;
     }
 }
