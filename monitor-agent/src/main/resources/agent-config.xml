@@ -35,4 +35,8 @@
     <codeinserterbuilders>
         <!--<codeinserterbuilder>org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder</codeinserterbuilder>-->
     </codeinserterbuilders>
+    <!--<track>-->
+        <!--&lt;!&ndash;被处理的执行时间的最小值:默认0&ndash;&gt;-->
+        <!--<duration>0</duration>-->
+    <!--</track>-->
 </config>

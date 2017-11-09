@@ -13,7 +13,7 @@ public class TrackListener {
   }
 
   public void onQuit(Track track, boolean isFail) {
-    if (track.duration() > Config.pointCost){
+    if (track.duration() >= Config.trackDuration){
       AgentLogger.cus.info(track.toString() + " FAIL:" + isFail);
     }
   }

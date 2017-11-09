@@ -19,6 +19,9 @@ public class Config {
 
     public static final String TYPE = "type";
 
+    public static final String TRACK = "track";
+    public static final String TRACK_DURATION = "duration";
+
     public static final String METHOD = "method";
     public static final String METHOD_OWNER = "owner";
     public static final String METHOD_NAME = "name";
@@ -49,9 +52,10 @@ public class Config {
     }
 
     public static String logLevel = "INFO";
+    // todo 暂时不支持此参数
     public static boolean logConsole ;
-    // todo 将来变更为动态
-    public static int pointCost ;
+    // todo 未来该值应该可以动态变更
+    public static int trackDuration ;
 
     public Set<String> typeIncludepatterns = new HashSet<String>();
     public Set<String> typeExcludepatterns = new HashSet<String>();
@@ -125,6 +129,15 @@ public class Config {
         if (subs!=null){
             for (Node iterm:subs){
                 config.codeinserterbuilders.add(iterm.value);
+            }
+        }
+        Node track = NodeSelector.selectNode(node,TRACK,0);
+        if (track != null){
+            Node trackDurationNode = NodeSelector.selectNode(track, TRACK_DURATION, 0);
+            if (trackDurationNode != null){
+                if (trackDurationNode.value != null && trackDurationNode.value.length()>0){
+                    config.trackDuration = Integer.parseInt(trackDurationNode.value);
+                }
             }
         }
         return config;

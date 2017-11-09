@@ -40,4 +40,7 @@
     <codeinserterbuilders>
         <!--<codeinserterbuilder>org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder</codeinserterbuilder>-->
     </codeinserterbuilders>
+    <track>
+        <duration>3</duration>
+    </track>
 </config>
