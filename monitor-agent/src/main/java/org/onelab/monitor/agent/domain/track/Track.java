@@ -123,6 +123,10 @@ public class Track {
     this.parent = parent;
   }
 
+  public long duration(){
+    return ETime-STime;
+  }
+
   public boolean equals(String className, String methodName, String methodDesc, Object thisObj) {
     return this.className == className
            && this.methodName == methodName
@@ -131,7 +135,7 @@ public class Track {
 
   public String toString(){
     return new StringBuilder(trackId).append(":").append(index).append("\t")
-        .append(ETime-STime).append("\t")
+        .append(duration()).append("\t")
         .append(className).append("#").append(methodName).append(methodDesc)
         .append(thisObj == null ? " STATIC" : thisObj.hashCode())
         .append(isRecursive() ? " RECURSIVE" : "")

@@ -50,6 +50,8 @@ public class Config {
 
     public static String logLevel = "INFO";
     public static boolean logConsole ;
+    // todo 将来变更为动态
+    public static int pointCost ;
 
     public Set<String> typeIncludepatterns = new HashSet<String>();
     public Set<String> typeExcludepatterns = new HashSet<String>();
