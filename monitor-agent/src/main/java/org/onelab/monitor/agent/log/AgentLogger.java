@@ -1,7 +1,5 @@
 package org.onelab.monitor.agent.log;
 
-import org.onelab.monitor.agent.config.Config;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -42,13 +40,8 @@ public class AgentLogger {
     private static Logger getLogger(String name, File dir, String fileName) throws IOException {
         Logger logger = Logger.getLogger(name);
         logger.setUseParentHandlers(false);
-        Level level = Level.INFO;
-        String logLevel = Config.logLevel;
-        if (logLevel != null && logLevel.length()==0){
-            level = Level.parse(logLevel);
-        }
-        logger.addHandler(getFileHandler(dir, fileName, level));
-        logger.setLevel(level);
+        logger.addHandler(getFileHandler(dir, fileName, Level.ALL));
+        logger.setLevel(Level.ALL);
         return logger;
     }
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <log level="info" console="false"/>
     <type>
         <!--包含的类名, 必须填写-->
         <includepatterns>
@@ -35,8 +34,8 @@
     <codeinserterbuilders>
         <!--<codeinserterbuilder>org.onelab.monitor.agent.transform.asm.inserter.builder.PicControllerBuilder</codeinserterbuilder>-->
     </codeinserterbuilders>
-    <!--<track>-->
-        <!--&lt;!&ndash;被处理的执行时间的最小值:默认0&ndash;&gt;-->
-        <!--<duration>0</duration>-->
-    <!--</track>-->
+    <track>
+        <!--被处理的执行时间的最小值:默认0-->
+        <duration>0</duration>
+    </track>
 </config>

@@ -15,8 +15,6 @@ public class AgentConfig {
 
     private Config config;
     private String jarHome;
-    private String agent_config_path = Const.AGENT_CONFIG_PATH;
-    private String agent_home_file = Const.AGENT_HOME_FILE;
 
     private TypePattern typePattern;
     private MethodPattern methodPattern;
@@ -40,12 +38,9 @@ public class AgentConfig {
     private void initConfig() throws Throwable{
         initJarHome();
         AgentLogger.initialize(jarHome + "log");
-        AgentLogger.sys.info("agent_config_path:" + jarHome + agent_config_path);
-        this.config = Config.init(jarHome+agent_config_path);
-        AgentLogger.sys.info(
-                new StringBuilder("config-log:{level:").append(config.logLevel).append(",console:")
-                        .append(config.logConsole).append("}").toString()
-        );
+        AgentLogger.sys.info("agent_config_path:" + jarHome + Const.AGENT_CONFIG_PATH);
+        this.config = Config.init(jarHome+Const.AGENT_CONFIG_PATH);
+
         AgentLogger.sys.info(
                 new StringBuilder("config-type: ")
                         .append("{includepatterns:").append(config.typeIncludepatterns)
@@ -65,7 +60,7 @@ public class AgentConfig {
     }
 
     private void initJarHome(){
-        jarHome = Agent.class.getClassLoader().getResource(agent_home_file).getPath();
+        jarHome = Agent.class.getClassLoader().getResource(Const.AGENT_HOME_FILE).getPath();
         if (jarHome.contains("!")){
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("!"));
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("/")+1);

@@ -3,7 +3,9 @@ package org.onelab.monitor.agent.config;
 import org.onelab.monitor.agent.config.xml.Node;
 import org.onelab.monitor.agent.config.xml.NodeSelector;
 import org.onelab.monitor.agent.config.xml.XmlUtil;
+import org.onelab.monitor.agent.log.AgentLogger;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,27 +15,23 @@ import java.util.Set;
  */
 public class Config {
 
-    public static final String LOG = "log";
-    public static final String LOG_LEVEL = "level";
-    public static final String LOG_CONSOLE = "console";
+    private static final String TYPE = "type";
 
-    public static final String TYPE = "type";
+    private static final String TRACK = "track";
+    private static final String TRACK_DURATION = "duration";
 
-    public static final String TRACK = "track";
-    public static final String TRACK_DURATION = "duration";
+    private static final String METHOD = "method";
+    private static final String METHOD_OWNER = "owner";
+    private static final String METHOD_NAME = "name";
+    private static final String METHOD_DESC = "desc";
 
-    public static final String METHOD = "method";
-    public static final String METHOD_OWNER = "owner";
-    public static final String METHOD_NAME = "name";
-    public static final String METHOD_DESC = "desc";
+    private static final String INCLUDEPATTERNS = "includepatterns";
+    private static final String INCLUDEPATTERN = "includepattern";
+    private static final String EXCLUDEPATTERNS = "excludepatterns";
+    private static final String EXCLUDEPATTERN = "excludepattern";
 
-    public static final String INCLUDEPATTERNS = "includepatterns";
-    public static final String INCLUDEPATTERN = "includepattern";
-    public static final String EXCLUDEPATTERNS = "excludepatterns";
-    public static final String EXCLUDEPATTERN = "excludepattern";
-
-    public static final String CODEINSERTERBUILDERS = "codeinserterbuilders";
-    public static final String CODEINSERTERBUILDER = "codeinserterbuilder";
+    private static final String CODEINSERTERBUILDERS = "codeinserterbuilders";
+    private static final String CODEINSERTERBUILDER = "codeinserterbuilder";
 
     public static class MethodDesc {
         public String owner;
@@ -51,10 +49,6 @@ public class Config {
         }
     }
 
-    public static String logLevel = "INFO";
-    // todo 暂时不支持此参数
-    public static boolean logConsole ;
-    // todo 未来该值应该可以动态变更
     public static int trackDuration ;
 
     public Set<String> typeIncludepatterns = new HashSet<String>();
@@ -66,16 +60,35 @@ public class Config {
     public Set<String> codeinserterbuilders = new HashSet<String>();
 
     public static Config init(String path) {
+        startUpdater(path);
+        return update(path);
+    }
+
+    private static void startUpdater(final String path) {
+        Thread thread = new Thread(new Runnable() {
+            private long lastUpdateTime = 0;
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(5000);
+                        File file = new File(path);
+                        if (file.lastModified() != lastUpdateTime){
+                            update(path);
+                            lastUpdateTime = file.lastModified();
+                        }
+                    } catch (Throwable e) {
+                        AgentLogger.sys.severe(e.toString());
+                    }
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private synchronized static Config update(String path) {
         Config config = new Config();
         Node node = XmlUtil.parseXml(path);
-        Node nodeLog = NodeSelector.selectNode(node,LOG,0);
-        if (nodeLog!=null && nodeLog.attributes!=null){
-            config.logLevel = nodeLog.attributes.get(LOG_LEVEL);
-            String isConsole = nodeLog.attributes.get(LOG_CONSOLE);
-            if ("true".equals(isConsole)){
-                config.logConsole = true;
-            }
-        }
         Node typeNode = NodeSelector.selectNode(node,TYPE,0);
         if (typeNode!=null){
             Node typeInclude = NodeSelector.selectNode(typeNode,INCLUDEPATTERNS,0);
