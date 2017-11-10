@@ -75,6 +75,7 @@ public class Config {
                         if (file.lastModified() != lastUpdateTime){
                             update(path);
                             lastUpdateTime = file.lastModified();
+                            AgentLogger.sys.info("update config: "+path);
                         }
                     } catch (Throwable e) {
                         AgentLogger.sys.severe(e.toString());

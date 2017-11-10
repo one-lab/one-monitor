@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <log level="info" console="false"/>
     <type>
         <!--包含的类名, 必须填写-->
         <includepatterns>

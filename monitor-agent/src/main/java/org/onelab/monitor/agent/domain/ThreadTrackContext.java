@@ -1,5 +1,6 @@
 package org.onelab.monitor.agent.domain;
 
+import org.onelab.monitor.agent.config.Config;
 import org.onelab.monitor.agent.domain.track.Track;
 import org.onelab.monitor.agent.utils.UUIDGenerator;
 
@@ -64,7 +65,7 @@ public class ThreadTrackContext {
    */
   public boolean prePush() {
     currDeeps++;
-    if (currDeeps > 200) return false;
+    if (Config.trackDuration < 0 || currDeeps > 200) return false;
     if (head!=null && head.isRecursive()) return false;
     return true;
   }
