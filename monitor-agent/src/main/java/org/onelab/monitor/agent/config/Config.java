@@ -5,7 +5,6 @@ import org.onelab.monitor.agent.config.xml.NodeSelector;
 import org.onelab.monitor.agent.config.xml.XmlUtil;
 import org.onelab.monitor.agent.log.AgentLogger;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,17 +65,11 @@ public class Config {
 
     private static void startUpdater(final String path) {
         Thread thread = new Thread(new Runnable() {
-            private long lastUpdateTime = 0;
             public void run() {
                 while (true) {
                     try {
                         Thread.sleep(5000);
-                        File file = new File(path);
-                        if (file.lastModified() != lastUpdateTime){
-                            update(path);
-                            lastUpdateTime = file.lastModified();
-                            AgentLogger.sys.info("update config: "+path);
-                        }
+                        update(path);
                     } catch (Throwable e) {
                         AgentLogger.sys.severe(e.toString());
                     }
@@ -85,6 +78,7 @@ public class Config {
         });
         thread.setDaemon(true);
         thread.start();
+        AgentLogger.sys.info("Config Updater start success .");
     }
 
     private synchronized static Config update(String path) {
