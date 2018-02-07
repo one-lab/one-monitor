@@ -20,6 +20,8 @@ public class AgentConfig {
     private MethodPattern methodPattern;
     private Set<String> codeInserterBuilders;
 
+    private static String OS = System.getProperty("os.name").toLowerCase();
+
     public void init() throws Throwable{
         initConfig();
         initAgentConfig();
@@ -61,12 +63,13 @@ public class AgentConfig {
 
     private void initJarHome(){
         jarHome = Agent.class.getClassLoader().getResource(Const.AGENT_HOME_FILE).getPath();
+        if (OS.indexOf("windows")>=0){
+            jarHome = jarHome.substring("file:/".length());
+        }
         if (jarHome.contains("!")){
             jarHome = jarHome.substring(0,jarHome.lastIndexOf("!"));
-            jarHome = jarHome.substring(0,jarHome.lastIndexOf("/")+1);
-        } else {
-            jarHome = jarHome.substring(0,jarHome.lastIndexOf("/")+1);
         }
+        jarHome = jarHome.substring(0,jarHome.lastIndexOf("/")+1);
     }
 
     public Set<String> getCodeInserterBuilders() {
