@@ -15,9 +15,8 @@ class LogFormatter extends Formatter {
 
   public String format(LogRecord record) {
     StringBuilder sb = new StringBuilder();
-    sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(record.getMillis())));
-    sb.append(" ").append(record.getLevel()).append(" : ");
-    sb.append(record.getMessage());
+    sb.append(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date(record.getMillis())));
+    sb.append(" ").append(record.getMessage());
     sb.append(this.lineSeparator);
     return sb.toString();
   }

@@ -8,8 +8,8 @@ import org.onelab.monitor.agent.log.AgentLogger;
  */
 public class TrackListener {
 
-  private final String FLAG_FAIL = " F";
-  private final String FLAG_SUCC = " S";
+  private final String FLAG_FAIL = "F ";
+  private final String FLAG_SUCC = "S ";
 
   public void onCome(Track track){
 
@@ -18,9 +18,9 @@ public class TrackListener {
   public void onQuit(Track track, boolean isFail) {
     if (track.duration() >= Config.trackDuration){
       if (isFail){
-        AgentLogger.cus.info(track.toString() + FLAG_FAIL);
+        AgentLogger.cus.info(FLAG_FAIL + track.toString());
       } else {
-        AgentLogger.cus.info(track.toString() + FLAG_SUCC);
+        AgentLogger.cus.info(FLAG_SUCC + track.toString());
       }
     }
   }
