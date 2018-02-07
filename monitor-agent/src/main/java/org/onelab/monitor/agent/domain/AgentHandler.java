@@ -32,8 +32,7 @@ public class AgentHandler {
             trackContext = new ThreadTrackContext();
             trackContextLocal.set(trackContext);
         }
-        if (trackContext.prePush()){
-            trackContext.push(buildTrack(args, thisObj, className, methodName, methodDesc));
+        if (trackContext.push(buildTrack(args, thisObj, className, methodName, methodDesc))){
             trackListener.onCome(trackContext.peek());
         }
     }

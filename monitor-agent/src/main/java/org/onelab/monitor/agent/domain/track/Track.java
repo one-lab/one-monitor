@@ -5,7 +5,7 @@ package org.onelab.monitor.agent.domain.track;
  */
 public class Track {
 
-  private String trackId;
+  private String tid;
   private int index;
   private String className;
   private String methodName;
@@ -19,12 +19,12 @@ public class Track {
   boolean recursive;
   private Track parent;
 
-  public void setTrackId(String trackId) {
-    this.trackId = trackId;
+  public void setTid(String tid) {
+    this.tid = tid;
   }
 
-  public String getTrackId() {
-    return trackId;
+  public String getTid() {
+    return tid;
   }
 
   public void setIndex(int index) {
@@ -134,10 +134,9 @@ public class Track {
   }
 
   public String toString(){
-    return new StringBuilder(trackId).append("\t").append(index).append("\t")
+    return new StringBuilder(tid).append("\t").append(index).append("\t")
         .append(duration()).append("\t")
         .append(isRecursive() ? "REC" : "NOR").append("\t")
-        .append(thisObj == null ? "STATIC" : thisObj.hashCode()).append("\t")
         .append(className).append("#").append(methodName).append(methodDesc)
         .toString();
   }

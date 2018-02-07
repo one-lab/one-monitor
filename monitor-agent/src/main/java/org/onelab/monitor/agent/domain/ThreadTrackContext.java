@@ -9,70 +9,43 @@ import org.onelab.monitor.agent.utils.UUIDGenerator;
  */
 public class ThreadTrackContext {
 
+  private Track head ;
+
+  private String tid = UUIDGenerator.randomUUID();
+
   //当前方法执行栈深度
   private int currDeeps = 0;
   //当前trackStack大小
   private int trackSize = 0;
 
-  private String traceId = UUIDGenerator.randomUUID();
-
-  private Track head ;
-
-  public int getCurrDeeps() {
-    return currDeeps;
-  }
-
-  public void setCurrDeeps(int currDeeps) {
-    this.currDeeps = currDeeps;
-  }
-
-  public int getTrackSize() {
-    return trackSize;
-  }
-
-  public void setTrackSize(int trackSize) {
-    this.trackSize = trackSize;
-  }
-
-  /**
-   * 尝试pop, 并减少深度currDeeps
-   * @return
-   */
-  public Track pop() {
-    if (prePop()){
-      Track result = head;
-      trackSize--;
-      head = head.getParent();
-      return result;
-    }
-    return null;
-  }
-
-  public void push(Track track) {
-    track.setParent(head);
-    head = track;
-    head.setIndex(trackSize++);
-    head.setTrackId(traceId);
-  }
-
   public Track peek() {
     return head;
   }
 
-  /**
-   * 增加深度currDeeps , 测试是否可以push
-   * @return
-   */
-  public boolean prePush() {
-    currDeeps++;
-    if (Config.trackDuration < 0 || currDeeps > 200) return false;
-    if (head!=null && head.isRecursive()) return false;
-    return true;
+  public Track pop() {
+    currDeeps--;
+    if (currDeeps+1 == trackSize){
+      trackSize--;
+      if (trackSize >= 0){
+        Track result = head;
+        head = head.getParent();
+        return result;
+      }
+    }
+    return null;
   }
 
-  private boolean prePop(){
-    if (trackSize > --currDeeps){
-      return true;
+  public boolean push(Track track) {
+    currDeeps++;
+    if (Config.trackDuration >= 0 && currDeeps<=200){
+      if (head==null || !head.isRecursive()){
+        trackSize++;
+        track.setTid(tid);
+        track.setIndex(trackSize-1);
+        track.setParent(head);
+        head = track;
+        return true;
+      }
     }
     return false;
   }
