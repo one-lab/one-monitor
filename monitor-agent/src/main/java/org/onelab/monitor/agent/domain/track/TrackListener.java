@@ -8,13 +8,20 @@ import org.onelab.monitor.agent.log.AgentLogger;
  */
 public class TrackListener {
 
+  private final String FLAG_FAIL = " F";
+  private final String FLAG_SUCC = " S";
+
   public void onCome(Track track){
 
   }
 
   public void onQuit(Track track, boolean isFail) {
     if (track.duration() >= Config.trackDuration){
-      AgentLogger.cus.info(track.toString() + " FAIL:" + isFail);
+      if (isFail){
+        AgentLogger.cus.info(track.toString() + FLAG_FAIL);
+      } else {
+        AgentLogger.cus.info(track.toString() + FLAG_SUCC);
+      }
     }
   }
 }
