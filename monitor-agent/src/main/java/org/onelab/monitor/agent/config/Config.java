@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,7 +36,13 @@ public class Config {
     private static final String CODEINSERTERBUILDERS = "codeinserterbuilders";
     private static final String CODEINSERTERBUILDER = "codeinserterbuilder";
 
-    static ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+    static ScheduledExecutorService ses = Executors.newScheduledThreadPool(1, new ThreadFactory() {
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(new ThreadGroup("OneMonitorAgent Config Updater"), r);
+            t.setDaemon(true);
+            return t;
+        }
+    });
 
     public static class MethodDesc {
         public String owner;
@@ -77,6 +84,7 @@ public class Config {
             public void run() {
                 try {
                     update(path);
+                    AgentLogger.sys.info("finish to update config : "+path);
                 } catch (Throwable e) {
                     AgentLogger.sys.severe(e.toString());
                 }

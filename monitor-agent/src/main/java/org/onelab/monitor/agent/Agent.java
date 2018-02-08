@@ -42,12 +42,10 @@ public class Agent {
     }
 
     private static void setupShutdownHooks() {
-        Thread thread = new Thread("OneMonitorAgent_Cleaner"){
+        Runtime.getRuntime().addShutdownHook(new Thread("OneMonitorAgent_Cleaner"){
             public void run() {
                 Agent.stop();
             }
-        };
-        thread.setDaemon(false);
-        Runtime.getRuntime().addShutdownHook(thread);
+        });
     }
 }
