@@ -14,10 +14,12 @@ public class AgentLogger {
 
     public static Logger sys;
     public static Logger cus;
+    public static Logger asm;
 
     public static final String filePreFix = "file:";
     public static final String sysLogFile = "sys.log";
     public static final String cusLogFile = "cus.log";
+    public static final String asmLogFile = "asm.log";
 
     public static final int maxSize = 30*1024*1024;
     public static final int maxFileCount = 500;
@@ -35,6 +37,7 @@ public class AgentLogger {
 
         sys = getLogger("SYS", agentDir, sysLogFile);
         cus = getLogger("CUS", agentDir, cusLogFile);
+        asm = getLogger("ASM", agentDir, asmLogFile);
     }
 
     private static Logger getLogger(String name, File dir, String fileName) throws IOException {

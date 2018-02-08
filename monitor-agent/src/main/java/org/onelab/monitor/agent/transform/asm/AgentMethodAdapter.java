@@ -149,11 +149,13 @@ public class AgentMethodAdapter extends AdviceAdapter implements Opcodes, Const 
     public void visitEnd() {
         super.visitEnd();
         super.visitAnnotation(Type.getDescriptor(TransformedMethod.class), true);
-        String msg = "Transformed-M:" + methodName + methodDesc;
+        String msg ;
         if (isRecursiveMethod){
             MethodTagStore.add(className,methodName,methodDesc, MethodTag.RECURSIVE);
-            msg = msg+"RECURSIVE";
+            msg = "M REC " + methodName + methodDesc;
+        } else {
+            msg = "M NOR " + methodName + methodDesc;
         }
-        AgentLogger.sys.info(msg);
+        AgentLogger.asm.info(msg);
     }
 }

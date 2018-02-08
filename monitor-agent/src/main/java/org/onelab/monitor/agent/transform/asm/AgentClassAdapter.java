@@ -39,6 +39,6 @@ public class AgentClassAdapter extends ClassVisitor {
         super.visitEnd();
         // 给被处理的类加标记
 //        super.visitAnnotation(Type.getDescriptor(TransformedClass.class), true);
-        AgentLogger.sys.info("Transformed-T:" + className);
+        AgentLogger.asm.info("T " + className);
     }
 }
