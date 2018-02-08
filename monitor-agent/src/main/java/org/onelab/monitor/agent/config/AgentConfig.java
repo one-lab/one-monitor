@@ -27,6 +27,10 @@ public class AgentConfig {
         initAgentConfig();
     }
 
+    public void stopUpdater() {
+        config.stopUpdater();
+    }
+
     private void initAgentConfig(){
         typePattern = new TypePattern(
             config.typeIncludepatterns,

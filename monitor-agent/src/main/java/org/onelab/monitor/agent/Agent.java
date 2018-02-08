@@ -37,6 +37,7 @@ public class Agent {
 
     private static void stop(){
         instrumentation.removeTransformer(agentTransformer);
+        config.stopUpdater();
         AgentLogger.sys.info("One-Monior-Agent stop success!");
     }
 

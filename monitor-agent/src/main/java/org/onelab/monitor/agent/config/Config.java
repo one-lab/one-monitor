@@ -8,6 +8,9 @@ import org.onelab.monitor.agent.log.AgentLogger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chunliangh on 14-12-7.
@@ -31,6 +34,8 @@ public class Config {
 
     private static final String CODEINSERTERBUILDERS = "codeinserterbuilders";
     private static final String CODEINSERTERBUILDER = "codeinserterbuilder";
+
+    static ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
 
     public static class MethodDesc {
         public String owner;
@@ -63,21 +68,20 @@ public class Config {
         return update(path);
     }
 
+    public void stopUpdater() {
+        ses.shutdown();
+    }
+
     private static void startUpdater(final String path) {
-        Thread thread = new Thread(new Runnable() {
+        ses.scheduleAtFixedRate(new Runnable() {
             public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(5000);
-                        update(path);
-                    } catch (Throwable e) {
-                        AgentLogger.sys.severe(e.toString());
-                    }
+                try {
+                    update(path);
+                } catch (Throwable e) {
+                    AgentLogger.sys.severe(e.toString());
                 }
             }
-        });
-        thread.setDaemon(true);
-        thread.start();
+        }, 30, 5, TimeUnit.SECONDS);
         AgentLogger.sys.info("Config Updater start success .");
     }
 
